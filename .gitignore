@@ -1,0 +1,7 @@
+# This file is needed for us to not publish any uneeded files
+
+# Ignore .env files
+*.env
+
+# Ignore .exe files
+*.exe

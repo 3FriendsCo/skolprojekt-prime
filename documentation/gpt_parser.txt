@@ -1,0 +1,97 @@
+class Parser {
+public:
+    AST_node parse(std::vector<Token>* tokens) {
+        int pos = 0;
+        return parse_statements(tokens, pos);
+    }
+
+private:
+    AST_node parse_statements(std::vector<Token>* tokens, int& pos) {
+        AST_node node;
+        node.type = AST_UNKNOWN;
+        std::vector<AST_node*> statements;
+
+        while (pos < tokens->size()) {
+            AST_node* statement = new AST_node(parse_statement(tokens, pos));
+            if (statement->type == AST_END_OF_FILE) {
+                delete statement;
+                break;
+            }
+            statements.push_back(statement);
+        }
+
+        node.type = AST_node_type::AST_STATEMENTS;
+        node.children = statements;
+        return node;
+    }
+
+    AST_node parse_statement(std::vector<Token>* tokens, int& pos) {
+        AST_node node;
+        node.type = AST_UNKNOWN;
+
+        if (pos >= tokens->size()) {
+            node.type = AST_END_OF_FILE;
+            return node;
+        }
+
+        Token token = (*tokens)[pos];
+
+        switch (token.type) {
+            case NUMBER:
+                node.type = AST_TOK_NUMBER;
+                node.value = std::stoi(token.value);
+                pos++;
+                break;
+            case LOG:
+                node = parse_log(tokens, pos);
+                break;
+            // Handle other token types here
+            default:
+                node.type = AST_UNKNOWN;
+                pos++;
+                break;
+        }
+
+        return node;
+    }
+    AST_node parse_log(std::vector<Token>* tokens, int& pos) {
+        AST_node node;
+        node.type = AST_LOG;
+        
+        // Move past the LOG keyword
+        pos++;
+
+        // Check if the next token is a left parenthesis
+        if (pos < tokens->size() && (*tokens)[pos].type == L_PAREN) {
+            pos++;
+        } else {
+            // Handle missing left parenthesis error
+        }
+
+        // Parse the expression inside the log function
+        AST_node* expression = new AST_node(parse_expression(tokens, pos));
+        node.children.push_back(expression);
+
+        // Check if the next token is a right parenthesis
+        if (pos < tokens->size() && (*tokens)[pos].type == R_PAREN) {
+            pos++;
+        } else {
+            // Handle missing right parenthesis error
+        }
+
+        return node;
+    }
+
+    AST_node parse_expression(std::vector<Token>* tokens, int& pos) {
+        AST_node node;
+        node.type = AST_UNKNOWN;
+
+        // Implement expression parsing logic here
+
+        return node;
+    }
+};
+
+----------------------------------------------------------------------- int (main)
+
+AST_node ast = parser.parse(&tokens);

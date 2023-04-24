@@ -1,0 +1,67 @@
+    //SYMBOLS
+    UNKNOWN = -1,
+
+    SPACE,
+
+    DOT,COMMA,COLON,SEMICOLON,
+    QUESTIONMARK,EXCLAMATIONPOINT,
+    S_QOUTE,D_QOUTE,
+   
+    L_PAREN,R_PAREN,
+
+    L_CURLBRACKET,R_CURLBRACKET,L_BRACKET,R_BRACKET,
+    LINE,
+    HASH,
+    AT_S,
+    REFERENCE_S,
+    DOLLAR,
+    PROCENT_S,
+
+    AND_S,
+    UNDERSCOR,
+    B_SLASH,
+    BACKTICK,
+    CIRCUMFLEX,
+    TILDE,
+    UMLAUT,
+    SECTION_S,
+    PLUS,
+    MINUS,
+    MULTIPLY,
+    DIVIDE,
+
+    FRACTION_S,
+   
+    LESS_THAN,GREATER_THAN,
+
+    TOK_NUMBER,
+
+    //KEYWORDS
+
+    IDENTIFIER,
+   
+    END_OF_FILE,
+
+    SEIZE,
+    LIBERATE,
+    BANISH,
+   
+    SHORT,
+    INT,
+    FLOAT,
+    DOUBLE,
+    LONG,
+    CHAR,
+    STRING,
+
+    //NULL_PTR, VOID_PTR, INT_PTR, CHAR_PTR, etc
+    FREE,
+    DELETE,
+
+    ENUM,
+    CLASS,
+    STRUCTURE,
+    FUNCTION,
+    MAIN,
+
+    MESSAGE,
