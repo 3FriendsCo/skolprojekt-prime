@@ -5,12 +5,15 @@
 #include <string>
 #include <sstream>
 #include <chrono>
+#include <iomanip>
+#include <time.h>
 
 //#include "include/error.h"
 #include "include/prime_ast.h"
 #include "include/Cpp.h"
 #include "include/Token.h"
 #include "include/color_lib.h"
+#include "config/config.h"
 
 static void log_usage(char** argv, int argc/*, mode*/) { //Logs the usage of the program
     ANSI_COLOR_OUTPUT(("USAGE: [" + std::to_string(argc) + "] " + "<" + argv[0] + ">\n"), "BrightYellow",{"Italic","Bold","Underline"});
@@ -128,10 +131,37 @@ int main(int argc, char** argv) {
     std::stringstream ss(call_command);
     ss >> call_command >> mode >> filename;
 
-    auto start = std::chrono::high_resolution_clock::now();
+// ------------------------ Delete if something goes wrong :) --------------------
+  
+    time_t current_time;
+    struct tm *time_info;
+    char compile_time[20];
+
+    time(&current_time);
+    time_info = localtime(&current_time);
+
+    strftime(compile_time, 20, "%Y-%m-%d %H:%M:%S", time_info);
+
+    printf("Compiled at: %s\n", compile_time);
+
+    // --------------------------------
+
+    // Start timing
+    clock_t start_time = clock();
+
+    // Stop timing and calculate elapsed time in milliseconds
+    clock_t end_time = clock();
+    double elapsed_time_ms = (double)(end_time - start_time) / CLOCKS_PER_SEC * 1000;
+
+    // Print the elapsed time
+    printf("Elapsed time: %f ms\n", elapsed_time_ms);
+
+// ------------------------ Delete if something goes wrong :) --------------------
+
+    auto compiletime_start = std::chrono::high_resolution_clock::now();
 
     std::ifstream prime_file(filename);
-    std::ofstream log_file("./logs/"+ filename + ".log");
+    std::ofstream log_file("./logs/"+ filename + ".log", std::ios::app);
 
     if(mode == "cpp") {
         std::ofstream cpp_file("./output/"+ filename + ".cpp");
@@ -149,8 +179,15 @@ int main(int argc, char** argv) {
 
     //primec_err::log_error("ERROR! Just a friendly error, nothing wrong with your code ;)", "BrightRed");
     
-    ANSI_COLOR_OUTPUT(("Vector size: " + std::to_string(tokens.size()) + "\n\n"), "BrightGreen",{"Italic"});
-    
+    switch(prime_settings::debug_mode) {
+        case true:
+            ANSI_COLOR_OUTPUT(("Vector size: " + std::to_string(tokens.size()) + "\n\n"), "BrightGreen",{"Italic"});
+            break;
+        default: 
+            std::cout << tokens.size() << "\n\n";
+            break;
+    }
+
     /*
     
     for(int i = 0; i < tokens.size(); i++) {
@@ -165,11 +202,11 @@ int main(int argc, char** argv) {
    
     prime_file.close();
 
-    auto stop = std::chrono::high_resolution_clock::now();
+    auto compiletime_stop = std::chrono::high_resolution_clock::now();
 
-    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(stop - start);
+    auto compiletime_duration = std::chrono::duration_cast<std::chrono::milliseconds>(compiletime_stop - compiletime_start);
 
-    ANSI_COLOR_OUTPUT(("Compile time: " + std::to_string(duration.count()) + " ms\n"), "BrightBlue",{});
+    ANSI_COLOR_OUTPUT(("Compile time: " + std::to_string(compiletime_duration.count()) + " ms\n"), "BrightBlue",{});
 
     //EXECUTE PRIME CODE HERE
 
