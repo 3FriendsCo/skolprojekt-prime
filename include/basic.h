@@ -43,7 +43,7 @@ namespace bas {
 
             switch(mode) {
                 case READ:
-                std::ifstream filestreamOBJname;
+                // std::ifstream filestreamOBJname;
                     
                 break;
                 case WRITE:

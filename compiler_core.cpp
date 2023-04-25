@@ -49,6 +49,7 @@ public:
                         keyword.clear();
                     }
                     tokens.emplace_back(Token{SPACE, " "});
+                    //If error, do error and "continue;"
                 } else if (!std::isalnum(current_char)) {
                     if (std::isalpha(previous_char)) {
                         tokens.emplace_back(Token{match_to_prime_keyword(keyword), keyword});
@@ -136,7 +137,6 @@ int main(int argc, char** argv) {
         std::ofstream cpp_file("./output/"+ filename + ".cpp");
         if(cpp_file.fail()) std::cerr << "ERROR: " << "cpp_file" << std::endl;
         //CPP cpp_instance();
-   
     } else {
         //IF IT IS "execute" THE PROGRAM WILL JUST RUN LIKE USUAL
         std::cout << "\n~ Error: invalid compilation mode: " << mode << "\n";

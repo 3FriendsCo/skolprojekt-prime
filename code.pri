@@ -1,10 +1,6 @@
-log("Hello World!");
-log("Hello World!");
-log("Hello World!");
-log("Hello World!");
-log("Hello World!");
-log("Hello World!");
-log("Hello World!");
-log("Hello World!");
-log("Hello World!");
-log("Hello World!");
+seize;
+liberate interface;
+
+main() {
+    log("Hello World!");
+}
