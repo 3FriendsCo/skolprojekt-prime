@@ -11,11 +11,8 @@
 
 int main() {
     clock_t compiletime_start = clock();
-    std::ofstream log_file("EXAMPLE.txt");
-    prime_error::lexer::log_error(compiletime_start, 511, 4, 3, 'o', "log(\"Hello World\");");
-    /*
-    prime_error::lexer::log_error(auto std::chrono::duration_cast<std::chrono::milliseconds> (compiletime_start), 511, 4, 3, 'o', "log(\"Hello World\");");
-    prime_error::lexer::note_error(std::chrono::duration_cast<std::chrono::milliseconds> (compiletime_start), &log_file, 511, 3, 4, 'o', "log(\"Hello World\");");
-    */
+    std::ofstream log_file("EXAMPLE.txt", std::ios::app);
+    prime_error::lexer::log_error(compiletime_start, 511, 5, 4, 'o', "log(\"Hello World\");");
+    prime_error::lexer::note_error(compiletime_start, &log_file, 511, 5, 4, 'o', "log(\"Hello World\");");
     return 0;
 }
