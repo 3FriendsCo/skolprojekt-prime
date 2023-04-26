@@ -4,9 +4,9 @@
 #include <string>
 #include <sstream>
 #include <chrono>
-#include <iomanip>
 #include <ctime>
 #include <cctype>
+#include <unordered_map>
 
 #include "include/error.h"
 #include "include/prime_ast.h"
@@ -15,7 +15,7 @@
 #include "include/color_lib.h"
 #include "config/config.h"
 
-static void log_usage(char** argv, int argc/*, mode*/) { //Logs the usage of the program
+static void log_usage(char** argv, int argc) { //Logs the usage of the program
     ANSI_COLOR_OUTPUT(("USAGE: [" + std::to_string(argc) + "] " + "<" + argv[0] + ">\n"), "BrightYellow",{"Italic","Bold","Underline"});
 }
 
@@ -55,14 +55,12 @@ public:
                     prime_error::lexer::log_error(compiletime_start, 511, current_pos, row, current_char, line);
                     prime_error::lexer::error_counter(1);
                     if (isalpha(previous_char)) {
-                        tokens.emplace_back(Token{match_to_prime_keyword(std::string(1, current_char)), std::string(1, current_char), current_pos, row, line});
+                        tokens.emplace_back(Token{match_to_prime_keyword(keyword), keyword, current_pos, row, line});
                         keyword.clear();
                     }
-                    //tokens.emplace_back(Token{SPACE, " "}); PRETTY UNECESSARY
-                    //If error, do error and "continue;"
                 } else if (!std::isalnum(current_char)) {
                     if (std::isalpha(previous_char)) {
-                        tokens.emplace_back(Token{match_to_prime_keyword(std::string(1, current_char)), std::string(1, current_char), current_pos, row, line});
+                        tokens.emplace_back(Token{match_to_prime_keyword(keyword), keyword, current_pos, row, line});
                         keyword.clear();
                     }
 
@@ -91,18 +89,18 @@ public:
                     }
                 } else if (std::isalpha(current_char) || (std::isdigit(current_char) && std::isalpha(previous_char))) {
                     keyword += current_char;
-                } else if (std::isdigit(current_char)) {
-                    std::string number;
-                    do {
-                        number += current_char;
-                        current_char = line[++i];
-                    } while (std::isdigit(current_char));
-                    tokens.emplace_back(Token{NUMBER, number, current_pos, row, line});
-                    i--;
-                } else {
-                    prime_error::lexer::log_error(compiletime_start, 511, current_pos, row, current_char, line);
-                    prime_error::lexer::note_error(compiletime_start, log_file, 511, current_pos, row, current_char, line);
-                }
+        } else if (std::isdigit(current_char)) {
+        std::string number; 
+    do {
+        number += current_char;
+        current_char = line[++i];
+        } while (std::isdigit(current_char));
+        tokens.emplace_back(Token{NUMBER, number, current_pos, row, line});
+        i--;
+    } else {
+        prime_error::lexer::log_error(compiletime_start, 511, current_pos, row, current_char, line);
+        prime_error::lexer::note_error(compiletime_start, log_file, 511, current_pos, row, current_char, line);
+    }
                 previous_char = current_char;
             }
         }
@@ -110,75 +108,35 @@ public:
     }
 };
 
-/*
-    class Parser {
-        public:
-        AST_node parse(std::vector<Token>* tokens) {
-            int pos = 0;
-            return parse_statements(tokens, pos);
-        }
-        private:
-    };
-*/
 
-class Linker {
-    //The linker will take the AST and link up headers and other files that are `liberated` from
-};
-
-class CPP {
-    public:
-    /*CPP() {
-
-
-    }*/
-};
-
-int main(int argc, char** argv) {  
+int main(int argc, char** argv) {
     log_usage(argv, argc);
-    /*
-        Lexer lex(line);
-        Parser parse(lex);
-    */
-    std::string mode = "cpp", filename = "code.pri", line, call_command = "primec";// FOR TESTING STABILITY, REMOVE DEFAULT VALUES LATER
-    /*
-    std::getline(std::cin, call_command);
-    std::stringstream ss(call_command);
-    ss >> call_command >> mode >> filename;
-    */
-  
+    std::string mode = "cpp", filename = "code.pri", line, call_command = "primec";
     time_t current_time;
     struct tm *time_info;
     char compile_time[20];
 
     time(&current_time);
     time_info = localtime(&current_time);
-
     strftime(compile_time, 20, "%Y-%m-%d %H:%M:%S", time_info);
-
     printf("Compiled at: %s\n", compile_time);
 
-    // Start timing
     auto main_compiletime_start = std::chrono::high_resolution_clock::now();
     clock_t compiletime_start = clock();
 
     std::ifstream prime_file(filename);
-    std::ofstream log_file("./logs/"+ filename + ".log", std::ios::app);
+    std::ofstream log_file("./logs/" + filename + ".log", std::ios::app);
 
     if(mode == "cpp") {
-        std::ofstream cpp_file("./output/"+ filename + ".cpp");
-        if(cpp_file.fail()) std::cerr << "ERROR: " << "cpp_file" << std::endl;
-        //CPP cpp_instance();
+        std::ofstream cpp_file("./output/" + filename + ".cpp");
+    if(cpp_file.fail()) std::cerr << "ERROR: " << "cpp_file" << std::endl;
     } else {
-        //IF IT IS "execute" THE PROGRAM WILL JUST RUN LIKE USUAL
         std::cout << "\n~ Error: invalid compilation mode: " << mode << "\n";
     }
 
     Lexer lexer;
-    //Parser parser
     std::vector<Token> tokens = lexer.lex(compiletime_start, &log_file, &prime_file);
-    
-    //prime_file.close(); // Deallocate memory
-    
+
     switch(prime_settings::debug_mode) {
         case true:
             ANSI_COLOR_OUTPUT(("Vector size: " + std::to_string(tokens.size()) + "\n\n"), "BrightGreen",{"Italic"});
@@ -197,11 +155,8 @@ int main(int argc, char** argv) {
         default: 
             break;
     }
-    
-    //parser.parse(&tokens/*, pos*/);
-   
-    //CPP FILE OUTPUT HANDLING
-   
+
+    prime_file.close();
     log_file.close();
 
     auto main_compiletime_stop = std::chrono::high_resolution_clock::now();
@@ -209,7 +164,7 @@ int main(int argc, char** argv) {
     auto main_compiletime_duration = std::chrono::duration_cast<std::chrono::milliseconds>(main_compiletime_stop - main_compiletime_start);
     
     std::ofstream COMPILETIME_TEST; // COMMENT OUT LATER
-    COMPILETIME_TEST.open("compiler_core_compiletime_test.txt", std::ios::app);
+    COMPILETIME_TEST.open("compiler_core2_compiletime_test.txt", std::ios::app);
     
     /*
     switch(prime_settings::debug_mode) {
@@ -224,12 +179,13 @@ int main(int argc, char** argv) {
     }
     */
 
-    COMPILETIME_TEST << std::to_string(main_compiletime_duration.count()) << std::endl;
+    COMPILETIME_TEST << std::to_string(main_compiletime_duration.count()) << std::endl << std::flush;
     COMPILETIME_TEST.close();
 
     if(prime_error::lexer::error_counter() > 0) exit(0);
     //ElSE:
     
     //EXECUTE PRIME CODE HERE
+
     return 0;
 }

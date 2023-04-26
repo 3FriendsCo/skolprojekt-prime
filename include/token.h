@@ -1,4 +1,6 @@
 #pragma once
+#include <unordered_map>
+#include <string>
 
 enum Token_type{
     UNKNOWN = -5,
@@ -64,39 +66,38 @@ enum Token_type{
     LESS_THAN = 132,GREATER_THAN = 133
 };
 
-Token_type match_to_prime_keyword(const std::string keyword) {
-    std::string prime_keywords[] = {
-    "seize", "liberate", "banish",
-    "global","static","const",
-    "main","fn","return",
-    "using",
-    "enum","namespace","struct","class",
-    "unsigned","short","int","long","float","double","boolean","char","string",
-    "if", "else",
-    "continue", "break",
-    "while","loop","for",
-    "switch",
-    
-    "bas", /*basic, e.g bas::log*/
+Token_type match_to_prime_keyword(const std::string &keyword) {
+    static const std::unordered_map<std::string, Token_type> prime_keywords = {
+        {"seize", SEIZE}, {"liberate", LIBERATE}, {"banish", BANISH},
+        {"global", GLOBAL}, {"static", STATIC}, {"const", CONST},
+        {"main", MAIN}, {"fn", FUNCTION}, {"return", RETURN},
+        {"using", USING},
+        {"enum", ENUM}, {"namespace", NAMESPACE}, {"struct", STRUCT}, {"class", CLASS},
+        {"unsigned", UNSIGNED}, {"short", SHORT}, {"int", INT}, {"long", LONG},
+        {"float", FLOAT}, {"double", DOUBLE}, {"boolean", BOOLEAN},
+        {"char", CHAR}, {"string", STRING},
+        {"if", IF}, {"else", ELSE},
+        {"continue", CONTINUE}, {"break", BREAK},
+        {"while", WHILE}, {"loop", LOOP}, {"for", FOR},
+        {"switch", SWITCH},
+        
+        {"bas", BASIC_NAMESPACE},
+        {"log", LOG}, {"logf", FORMATED_LOG}, {"read", READ}, {"readf", FORMATED_READ},
+        {"write", WRITE}, {"writef", FORMATED_WRITE}, {"file", NUMBER},
 
-    "log","logf","read","readf","write","writef",
-    "file",
-    "","","","","","","","","","","","","","","","","",
-    "","","","","","","","","","","","","","","","","",
-    "","","","","","","","","","","","","","","","","",
-    "","","","","","","","","","","",
-
-    //Symbols:
-    ".",",",":",";","?","!","\'","\"","(",")","{","}","[","]","|","#","@","$","¤","%","&","_","\\",
-    "`","^","~","§","+","-","*","/", "<", ">"
+        {".", DOT}, {",", COMMA}, {":", COLON}, {";", SEMICOLON},
+        {"?", QUESTIONMARK}, {"!", EXCLAMATIONPOINT},
+        {"'", SINGLE_QOUTE}, {"\"", DOUBLE_QOUTE},
+        {"(", L_PAREN}, {")", R_PAREN},
+        {"{", L_CURLBRACKET}, {"}", R_CURLBRACKET},
+        {"[", L_BRACKET}, {"]", R_BRACKET},
+        {"|", LINE}, {"#", HASH}, {"@", AT_S}, {"$", DOLLAR}, {"¤", REFERENCE_S},
+        {"%", PROCENT_S}, {"&", AND_S}, {"_", UNDERLINE}, {"\\", B_SLASH},
+        {"`", BACKTICK}, {"^", CIRCUMFLEX}, {"~", TILDE}, {"§", SECTION_S},
+        {"+", PLUS}, {"-", MINUS}, {"*", ASTRISK}, {"/", DIVIDE},
+        {"<", LESS_THAN}, {">", GREATER_THAN}
     };
 
-    for(int i = 0; i < 134; i++) { // i < "the known amount of prime keywords"
-        //REPLACE (ABOVE) WITH FOREACH LATER
-        if(keyword == prime_keywords[i]) {
-            return Token_type(i);
-            break;
-        }
-    }
-    return UNKNOWN; //The Compiler will later check if it is UNKNOWN or if it is an IDENTIFIER
+    auto it = prime_keywords.find(keyword);
+    return it != prime_keywords.end() ? it->second : UNKNOWN;
 }
