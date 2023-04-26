@@ -26,7 +26,7 @@ enum Token_type{
 
     BASIC_NAMESPACE = 31,
 
-    LOG = 32,FORMATED_LOG = 33,READ = 34,FORMATED_READ = 35,WRITE = 36,FORMATED_WRITE = 37,
+    LOG = 32,FORMATTED_LOG = 33,READ = 34,FORMATTED_READ = 35,WRITE = 36,FORMATTED_WRITE = 37,
 
     // Keyword to be added:
     NUMBER = 100,
@@ -82,8 +82,8 @@ Token_type match_to_prime_keyword(const std::string &keyword) {
         {"switch", SWITCH},
         
         {"bas", BASIC_NAMESPACE},
-        {"log", LOG}, {"logf", FORMATED_LOG}, {"read", READ}, {"readf", FORMATED_READ},
-        {"write", WRITE}, {"writef", FORMATED_WRITE}, {"file", NUMBER},
+        {"log", LOG}, {"logf", FORMATTED_LOG}, {"read", READ}, {"readf", FORMATTED_READ},
+        {"write", WRITE}, {"writef", FORMATTED_WRITE}, {"file", NUMBER}, /* WRONG, should be FILE_TOKEN*/ /* ADD "note"*/
 
         {".", DOT}, {",", COMMA}, {":", COLON}, {";", SEMICOLON},
         {"?", QUESTIONMARK}, {"!", EXCLAMATIONPOINT},

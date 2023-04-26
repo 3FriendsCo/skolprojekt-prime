@@ -27,12 +27,6 @@ struct Token {
     std::string line;
 };
 
-struct AST_node {
-    AST_node_type type;
-    int value;
-    std::vector<AST_node*> children;
-};
-
 class Lexer {
 public:
     std::vector<Token> lex(clock_t compiletime_start, std::ofstream* log_file, std::ifstream* prime_file) {

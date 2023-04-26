@@ -1,10 +1,10 @@
 #pragma once
+#include <vector>
 
 enum AST_node_type{
     AST_UNKNOWN = -1,
     AST_END_OF_FILE,
     AST_SEMICOLON,
-
 
     AST_SEIZE,
     AST_LIBERATE,
@@ -41,4 +41,14 @@ enum AST_node_type{
 
     AST_MESSAGE,
     AST_LOG,
+};
+
+struct AST_node {
+    AST_node_type type;
+    int value;
+    std::vector<AST_node*> children;
+};
+
+class Pre_processor {
+    
 };

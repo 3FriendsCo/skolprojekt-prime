@@ -71,6 +71,10 @@
     "future": "cpp",
     "list": "cpp",
     "unordered_map": "cpp",
-    "xhash": "cpp"
+    "xhash": "cpp",
+    "deque": "cpp",
+    "ranges": "cpp",
+    "span": "cpp",
+    "stack": "cpp"
   }
 }
