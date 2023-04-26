@@ -9,11 +9,11 @@
 #include <cctype>
 
 #include "include/error.h"
-#include "include/AST.h"
 #include "include/Cpp.h"
 #include "include/Token.h"
 #include "include/color_lib.h"
 #include "config/config.h"
+#include "include/AST.h"
 
 static void log_usage(char** argv, int argc) { // Logs the usage of the program
     ANSI_COLOR_OUTPUT(("USAGE: [" + std::to_string(argc) + "] " + "<" + argv[0] + ">\n"), "BrightYellow",{"Italic","Bold","Underline"});
@@ -115,229 +115,6 @@ public:
 };
 
 class Parser {
-    private:
-    // UNKNOWN:
-    inline AST_node UNKNOWN() {
-        AST_node pre_process_seize;
-        return pre_process_seize;
-    }
-    // PRE-PROCESSORS:
-    inline AST_node Seize() {
-        AST_node pre_process_seize;
-        return pre_process_seize;
-    }
-    inline AST_node Liberate() {
-        AST_node pre_process_liberate;
-        return pre_process_liberate;
-    }
-    inline AST_node Banish() {
-        AST_node pre_process_banish;
-        return pre_process_banish;
-    }
-    inline AST_node Force() {
-        AST_node pre_process_force;
-        return pre_process_force;
-    }
-    // 
-    inline AST_node Global() {
-        AST_node pre_process_global;
-        return pre_process_global;
-    }
-    inline AST_node Static() {
-        AST_node pre_process_static;
-        return pre_process_static;
-    }
-    inline AST_node Const() {
-        AST_node pre_process_const;
-        return pre_process_const;
-    }
-    inline AST_node Main() {
-        AST_node pre_process_main;
-        return pre_process_main;
-    }
-    inline AST_node Function() {
-        AST_node pre_process_function;
-        return pre_process_function;
-    }
-    inline AST_node Return()
-    {
-        AST_node pre_process_return;
-        return pre_process_return;
-    }
-    inline AST_node Using()
-    {
-        AST_node pre_process_using;
-        return pre_process_using;
-    }
-    inline AST_node Enum()
-    {
-        AST_node pre_process_enum;
-        return pre_process_enum;
-    }
-    inline AST_node Namespace()
-    {
-        AST_node pre_process_namespace;
-        return pre_process_namespace;
-    }
-    inline AST_node Struct()
-    {
-        AST_node pre_process_struct;
-        return pre_process_struct;
-    }
-    inline AST_node Class()
-    {
-        AST_node pre_process_class;
-        return pre_process_class;
-    }
-    inline AST_node Unsigned()
-    {
-        AST_node pre_process_unsigned;
-        return pre_process_unsigned;
-    }
-    inline AST_node Short()
-    {
-        AST_node pre_process_short;
-        return pre_process_short;
-    }
-    inline AST_node Int()
-    {
-        AST_node pre_process_int;
-        return pre_process_int;
-    }
-    inline AST_node Long()
-    {
-        AST_node pre_process_long;
-        return pre_process_long;
-    }
-    inline AST_node Float()
-    {
-        AST_node pre_process_float;
-        return pre_process_float;
-    }
-    inline AST_node Double()
-    {
-        AST_node pre_process_double;
-        return pre_process_double;
-    }
-    inline AST_node Boolean()
-    {
-        AST_node pre_process_boolean;
-        return pre_process_boolean;
-    }
-    inline AST_node Char()
-    {
-        AST_node pre_process_char;
-        return pre_process_char;
-    }
-    inline AST_node String()
-    {
-        AST_node pre_process_string;
-        return pre_process_string;
-    }
-    inline AST_node If()
-    {
-        AST_node pre_process_if;
-        return pre_process_if;
-    }
-    inline AST_node Else()
-    {
-        AST_node pre_process_else;
-        return pre_process_else;
-    }
-    inline AST_node Continue()
-    {
-        AST_node pre_process_continue;
-        return pre_process_continue;
-    }
-    inline AST_node Break()
-    {
-        AST_node pre_process_break;
-        return pre_process_break;
-    }
-    inline AST_node While()
-    {
-        AST_node pre_process_while;
-        return pre_process_while;
-    }
-    inline AST_node Loop()
-    {
-        AST_node pre_process_loop;
-        return pre_process_loop;
-    }
-    inline AST_node For()
-    {
-        AST_node pre_process_for;
-        return pre_process_for;
-    }
-    inline AST_node Switch()
-    {
-        AST_node pre_process_switch;
-        return pre_process_switch;
-    }
-
-    inline AST_node Basic_Namespace()
-    {
-        AST_node pre_process_basic_namespace;
-        return pre_process_basic_namespace;
-    }
-    inline AST_node Log()
-    {
-        AST_node pre_process_log;
-        return pre_process_log;
-    }
-    inline AST_node Formatted_Log()
-    {
-        AST_node pre_process_formatted_log;
-        return pre_process_formatted_log;
-    }
-    inline AST_node Read()
-    {
-        AST_node pre_process_read;
-        return pre_process_read;
-    }
-    inline AST_node Formatted_Read()
-    {
-        AST_node pre_process_formatted_read;
-        return pre_process_formatted_read;
-    }
-    inline AST_node Write()
-    {
-        AST_node pre_process_write;
-        return pre_process_write;
-    }
-    inline AST_node Formatted_Write()
-    {
-        AST_node pre_process_formatted_write;
-        return pre_process_formatted_write;
-    }
-    // NOTE (MISSING)
-    // FILE_TOKEN (MISSING)
-    inline AST_node Dot()
-    {
-        AST_node pre_process_dot;
-        return pre_process_dot;
-    }
-    inline AST_node Comma()
-    {
-        AST_node pre_process_comma;
-        return pre_process_comma;
-    }
-    inline AST_node Colon()
-    {
-        AST_node pre_process_colon;
-        return pre_process_colon;
-    }
-    inline AST_node Semicolon()
-    {
-        AST_node pre_process_semicolon;
-        return pre_process_semicolon;
-    }
-    inline AST_node Questionmark()
-    {
-        AST_node pre_process_questionmark;
-        return pre_process_questionmark;
-    }
-
     void expects() {
         //expects the next token to be a certain type
     }
@@ -347,55 +124,83 @@ class Parser {
         std::vector<AST_node> AST;
         for(int i = 0; i < tokens.size(); i++) {
             switch(tokens[i].type) {
-                case SEIZE: Seize(); break;
-                case LIBERATE: Liberate(); break;
-                case BANISH: Banish(); break;
-              //case FORCE: force(); break;
-                case GLOBAL: Global(); break;
-                case STATIC: Static(); break;
-                case CONST: Const(); break;
-                case MAIN: Main(); break;
-                case FUNCTION: Function(); break;
-                case RETURN: Return(); break;
-                case USING: Using(); break;
-                case ENUM: Enum(); break;
-                case NAMESPACE: Namespace(); break;
-                case STRUCT: Struct(); break;
-                case CLASS: Class(); break;
-                case UNSIGNED: Unsigned(); break;
-                case SHORT: Short(); break;
-                case INT: Int(); break;
-                case LONG: Long(); break;
-                case FLOAT: Float(); break;
-                case DOUBLE: Double(); break;
-                case BOOLEAN: Boolean(); break;
-                case CHAR: Char(); break;
-                case STRING: String(); break;
-                case IF: If(); break;
-                case ELSE: Else(); break;
-                case CONTINUE: Continue(); break;
-                case BREAK: Break(); break;
-                case WHILE: While(); break;
-                case LOOP: Loop(); break;
-                case FOR: For(); break;
-                case SWITCH: Switch(); break;
+                case SEIZE: Pre_processor::Seize(); break;
+                case LIBERATE: Pre_processor::Liberate(); break;
+                case BANISH: Pre_processor::Banish(); break;
+              //case FORCE: Pre_processor::force(); break;
+                case GLOBAL: Attribute::Global(); break;
+                case STATIC: Attribute::Static(); break;
+                case CONST: Attribute::Const(); break;
+                case MAIN: Function::Main(); break;
+                case FUNCTION: Function::Function(); break;
+                case RETURN: Function::Return(); break;
+                case USING: Scope::Using(); break;
+                case ENUM: Scope::Enum(); Complex_type::Enum(); break;
+                case NAMESPACE: Scope::Namespace(); break;
+                case STRUCT: Complex_type::Struct(); break;
+                case CLASS: Complex_type::Class(); break;
+                case UNSIGNED: Attribute::Unsigned(); break;
+                case SHORT: Primitive_type::Numeric_type::Short(); break;
+                case INT: Primitive_type::Numeric_type::Int(); break;
+                case LONG: Primitive_type::Numeric_type::Long(); break;
+                case FLOAT: Primitive_type::Numeric_type::Float(); break;
+                case DOUBLE: Primitive_type::Numeric_type::Double(); break;
+                case BOOLEAN: Primitive_type::Boolean(); break;
+                case CHAR: Primitive_type::Char(); break;
+                case STRING: Nonprimitive_type::String(); break;
+                case IF: Conditional_statement::If(); break;
+                case ELSE: Conditional_statement::Else(); break;
+                case CONTINUE: Control_flow_statement::Continue(); break;
+                case BREAK: Control_flow_statement::Break(); break;
+                case WHILE: Loop::While(); break;
+                case LOOP: Loop::Loop(); break;
+                case FOR: Loop::For(); break;
+                case SWITCH: Conditional_statement::Switch(); break;
                 
-                case BASIC_NAMESPACE: Basic_Namespace(); break;
-                case LOG: Log(); break;
-                case FORMATTED_LOG: Formatted_Log(); break;
-                case READ: Read(); break;
-                case FORMATTED_READ: Formatted_Read(); break;
-                case WRITE: Write(); break;
-                case FORMATTED_WRITE: Formatted_Write(); break;
+                case BASIC_NAMESPACE: Native_namespace::Basic_Namespace(); break;
+                case LOG: IO::Log(); break;
+                case FORMATTED_LOG: IO::Formatted_Log(); break;
+                case READ: IO::Read(); break;
+                case FORMATTED_READ: IO::Formatted_Read(); break;
+                case WRITE: IO::Write(); break;
+                case FORMATTED_WRITE: IO::Formatted_Write(); break;
               //case NOTE: Note(); break;
               //case FILE_TOKEN: File();
-                case DOT: Dot(); break;
-                case COMMA: Comma(); break;
-                case COLON: Colon(); break;
-                case SEMICOLON: Semicolon(); break;
-                case QUESTIONMARK: Questionmark(); break;
+                case DOT: Symbol::Dot(); break;
+                case COMMA: Symbol::Comma(); break;
+                case COLON: Symbol::Colon(); break;
+                case SEMICOLON: Symbol::Semicolon(); break;
+                case QUESTIONMARK: Symbol::Questionmark(); break;
+                case EXCLAMATIONPOINT: Symbol::Exclamationpoint(); break;
+                case SINGLE_QOUTE: Symbol::Single_Qoute(); break;
+                case DOUBLE_QOUTE: Symbol::Double_Qoute(); break;
+                case L_PAREN: Symbol::Left_Parenthesis(); break;
+                case R_PAREN: Symbol::Right_Parenthesis(); break;
+                case L_CURLBRACKET: Symbol::Left_Curlybracket(); break;
+                case R_CURLBRACKET: Symbol::Right_Curlybracket(); break;
+                case L_BRACKET: Symbol::Left_Bracket(); break;
+                case R_BRACKET: Symbol::Right_Bracket(); break;
+                case LINE: Symbol::Line(); break;
+                case HASH: Symbol::Hash(); break;
+                case AT_S: Symbol::At_Symbol(); break;
+                case DOLLAR: Symbol::Dollar(); break;
+                case REFERENCE_S: Symbol::Reference_Symbol(); break;
+                case PROCENT_S: Symbol::Procent_Symbol(); break;
+                case AND_S: Symbol::And_Symbol(); break;
+                case UNDERLINE: Symbol::Underline(); break;
+                case B_SLASH: Symbol::Back_Slash(); break;
+                case BACKTICK: Symbol::Backtick(); break;
+                case CIRCUMFLEX: Symbol::Circumflex(); break;
+                case TILDE: Symbol::Tilde(); break;
+                case SECTION_S: Symbol::Section_Symbol(); break;
+                case PLUS: Symbol::Plus(); break;
+                case MINUS: Symbol::Minus(); break;
+                case ASTRISK: Symbol::Astrisk(); break;
+                case F_SLASH: Symbol::Forward_Slash(); break;
+                case LESS_THAN: Symbol::Less_Than(); break;
+                case GREATER_THAN: Symbol::Greater_Than(); break;
 
-                default: UNKNOWN(); break;
+                default: Unknown::Unknown(); break;
             }
         }
         return AST;

@@ -61,7 +61,7 @@ enum Token_type{
     PLUS = 128,
     MINUS = 129,
     ASTRISK = 130,
-    DIVIDE = 131,
+    F_SLASH = 131,
    
     LESS_THAN = 132,GREATER_THAN = 133
 };
@@ -94,7 +94,7 @@ Token_type match_to_prime_keyword(const std::string &keyword) {
         {"|", LINE}, {"#", HASH}, {"@", AT_S}, {"$", DOLLAR}, {"¤", REFERENCE_S},
         {"%", PROCENT_S}, {"&", AND_S}, {"_", UNDERLINE}, {"\\", B_SLASH},
         {"`", BACKTICK}, {"^", CIRCUMFLEX}, {"~", TILDE}, {"§", SECTION_S},
-        {"+", PLUS}, {"-", MINUS}, {"*", ASTRISK}, {"/", DIVIDE},
+        {"+", PLUS}, {"-", MINUS}, {"*", ASTRISK}, {"/", F_SLASH},
         {"<", LESS_THAN}, {">", GREATER_THAN}
     };
 
