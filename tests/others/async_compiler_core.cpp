@@ -8,6 +8,7 @@
 #include <iomanip>
 #include <time.h>
 #include <future>
+#include <thread>
 
 #include "include/error.h"
 #include "include/prime_ast.h"
@@ -167,6 +168,11 @@ int main(int argc, char** argv) {
     std::ifstream prime_file(filename);
     std::ofstream log_file("./logs/"+ filename + ".log", std::ios::app);
 
+    Lexer lexer;
+    std::future<std::vector<Token>> async_tokens = std::async(std::launch::async, [&lexer, &compiletime_start, &log_file, &prime_file](){
+        return lexer.lex(compiletime_start, &log_file, &prime_file);
+    });
+
     if(mode == "cpp") {
         std::ofstream cpp_file("./output/"+ filename + ".cpp");
         if(cpp_file.fail()) std::cerr << "ERROR: " << "cpp_file" << std::endl;
@@ -176,11 +182,10 @@ int main(int argc, char** argv) {
         std::cout << "\n~ Error: invalid compilation mode: " << mode << "\n";
     }
 
-    Lexer lexer;
     //Parser parser;
-
-    std::vector<Token> tokens = lexer.lex(compiletime_start, &log_file, &prime_file);
     
+    std::vector<Token> tokens = async_tokens.get();
+
     switch(prime_settings::debug_mode) {
         case true:
             ANSI_COLOR_OUTPUT(("Vector size: " + std::to_string(tokens.size()) + "\n\n"), "BrightGreen",{"Italic"});
@@ -213,7 +218,7 @@ int main(int argc, char** argv) {
     auto main_compiletime_duration = std::chrono::duration_cast<std::chrono::milliseconds>(main_compiletime_stop - main_compiletime_start);
     
     std::ofstream COMPILETIME_TEST; // COMMENT OUT LATER
-    COMPILETIME_TEST.open("compiler_core_compiletime_test.txt", std::ios::app);
+    COMPILETIME_TEST.open("async_compiler_core_compiletime_test.txt", std::ios::app);
     
     /*
     switch(prime_settings::debug_mode) {
@@ -233,7 +238,7 @@ int main(int argc, char** argv) {
 
     if(prime_error::lexer::error_counter() > 0) exit(0);
     //ElSE:
-    
+
     //EXECUTE PRIME CODE HERE
     return 0;
 }

@@ -1,25 +1,3 @@
-// using namespace web_safe;
-/*
-namespace extra_color {
-    struct RGB {
-        std::string hej;
-        int sda;
-    };
-}
-*/
-
-/*
-extra_color::RGB Red;
-
-HEX myColor;
-
-myObj.setcolor(web_safe::black);
-
-cout << "Color: " << web_safe.RGB::red; // Color: (255,0,0)
-
-// There is a built-in namespace with that name, you are currently overwriting it, do you want to overwrite it?
-*/
-
 #pragma once
 #include <iostream>
 #include <map>
@@ -157,7 +135,7 @@ void ANSI_COLOR_OUTPUT(const std::string& message, const std::string& color_name
     }
 
     std::string formatted_message = ansi_util + ansi_color + message + ansi_utilities.ResetFormatting;
-    std::cout << formatted_message << std::endl;
+    std::cout << formatted_message;
 }
 
 /* Example usage:

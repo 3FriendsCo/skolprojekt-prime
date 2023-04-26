@@ -11,7 +11,13 @@
 
 namespace prime_error {
     namespace lexer {
-        inline void log_error(clock_t& compiletime_start, int error_code, int current_pos, int row, char current_char, const std::string line) {
+        int error_count = 0;
+        inline int error_counter(int x = 0) {
+            error_count += x;
+            return error_count;
+        }
+
+        inline void log_error(clock_t& compiletime_start, int error_code, int current_pos, int row, char current_char, const std::string& line) {
             // Initialize variables
             std::string error_message, explanation, reason, suggested_action, row_str, buff_str, try_str;
             std::string link = "https://github.com/3FriendsCo/primeLang";
@@ -57,12 +63,12 @@ namespace prime_error {
             clock_t compiletime_end = clock();
             double compiletime_duration = (double)(compiletime_end - compiletime_start) / CLOCKS_PER_SEC * 1000;
             // Construct formatted error message
-            std::string formatted_error = "[Lexer: " + std::to_string(error_code) + "] " + error_message + " | " + std::to_string((int)(compiletime_duration)) + "ms\n\t" + row_str + "|\t" + line + "\n\t" + buff_str + "|\t" + std::string(current_pos-1, ' ') + "^~ " + explanation + "\n\t   |" + std::string(length_a - 1, '-') + "\n\t" + res_str + ":\t" + reason + "\n\t" + try_str + ":\t" + suggested_action + "\n\t" + web_str + ":\t" + link;
+            std::string formatted_error = "[Lexer: " + std::to_string(error_code) + "] " + error_message + " | " + std::to_string((int)(compiletime_duration)) + "ms\n\t" + row_str + "|\t" + line + "\n\t" + buff_str + "|\t" + std::string(current_pos, ' ') + "^~ " + explanation + "\n\t   |" + std::string(length_a + 3, '-') + "\n\t" + res_str + ":\t" + reason + "\n\t" + try_str + ":\t" + suggested_action + "\n\t" + web_str + ":\t" + link;
             // Output error message to stderr
             std::cerr << formatted_error << std::endl << std::flush;
         }
 
-        inline void note_error(clock_t& compiletime_start,std::ofstream* log_file, int error_code, int current_pos, int row, char current_char, const std::string line) {
+        inline void note_error(clock_t& compiletime_start,std::ofstream* log_file, int error_code, int current_pos, int row, char current_char, const std::string& line) {
             // Initialize variables
             std::string error_message, explanation, reason, suggested_action, row_str, buff_str, try_str;
             std::string link = "https://github.com/3FriendsCo/primeLang";
@@ -108,15 +114,15 @@ namespace prime_error {
             clock_t compiletime_end = clock();
             double compiletime_duration = (double)(compiletime_end - compiletime_start) / CLOCKS_PER_SEC * 1000;
             // Construct formatted error message
-            std::string formatted_error = "[Lexer: " + std::to_string(error_code) + "] " + error_message + " | " + std::to_string((int)(compiletime_duration)) + "ms\n\t" + row_str + "|\t" + line + "\n\t" + buff_str + "|\t" + std::string(current_pos-1, ' ') + "^~ " + explanation + "\n\t   |" + std::string(length_a - 1, '-') + "\n\t" + res_str + ":\t" + reason + "\n\t" + try_str + ":\t" + suggested_action + "\n\t" + web_str + ":\t" + link;
+            std::string formatted_error = "[Lexer: " + std::to_string(error_code) + "] " + error_message + " | " + std::to_string((int)(compiletime_duration)) + "ms\n\t" + row_str + "|\t" + line + "\n\t" + buff_str + "|\t" + std::string(current_pos, ' ') + "^~ " + explanation + "\n\t   |" + std::string(length_a + 3, '-') + "\n\t" + res_str + ":\t" + reason + "\n\t" + try_str + ":\t" + suggested_action + "\n\t" + web_str + ":\t" + link;
             // Output error message to stderr
             *log_file << formatted_error << std::endl << std::flush;
         }
     }
 
     namespace parser {
-        void log_error() {
-
+        inline void log_error(clock_t& compiletime_start, int error_code, int current_pos, int row, char current_char, const std::string& line) {
+            
         }
     }
 
