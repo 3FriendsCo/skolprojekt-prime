@@ -40,80 +40,91 @@ struct AST_node {
 class Lexer {
 public:
     std::vector<Token> lex(clock_t compiletime_start, std::ofstream* log_file, std::ifstream* prime_file) {
-        int current_pos, row = 0;
-        char current_char, previous_char = 0;
-        std::vector<Token> tokens;
-        std::string keyword, line;
+    int current_pos, row = 0;
+    char current_char, previous_char = 0;
+    std::vector<Token>* tokens = new std::vector<Token> {};
+    std::string keyword, line;
 
-        while (std::getline(*prime_file, line)) {
-            row++;
-            line.push_back(' ');
-            for (size_t i = 0; i < line.length(); i++) {
-                current_pos = i;
-                current_char = line[current_pos];
+    while (std::getline(*prime_file, line)) {
+        row++;
+        line.push_back(' ');
+        std::istringstream input_string_stream(line);
+        while (input_string_stream.peek() != EOF) {
+            current_pos = input_string_stream.tellg();
+            current_char = input_string_stream.get();
 
-                if (std::isspace(current_char)) {
-                    if(prime_error::lexer::error_counter() == 0) {
-                        ANSI_COLOR_OUTPUT("ERROR\n", "BrightRed");
-                    }
-                    prime_error::lexer::log_error(compiletime_start, 511, current_pos, row, current_char, line);
-                    prime_error::lexer::error_counter(1);
-                    if (isalpha(previous_char)) {
-                        tokens.emplace_back(Token{match_to_prime_keyword(std::string(1, current_char)), std::string(1, current_char), current_pos, row, line});
-                        keyword.clear();
-                    }
-                    //tokens.emplace_back(Token{SPACE, " "}); PRETTY UNECESSARY
-                    //If error, do error and "continue;"
-                } else if (!std::isalnum(current_char)) {
-                    if (std::isalpha(previous_char)) {
-                        tokens.emplace_back(Token{match_to_prime_keyword(std::string(1, current_char)), std::string(1, current_char), current_pos, row, line});
-                        keyword.clear();
-                    }
-
-                    if (current_char == '\"') {
-                        std::string message;
-                        message += current_char;
-                        while (++i < line.length() && (current_char = line[i]) != '\"') {
-                            message += current_char;
-                            if (current_char == '\\') {
-                                message += line[++i];
-                            }
-                        }
-                        message += current_char;
-                        tokens.emplace_back(Token{MESSAGE, message, current_pos, row, line});
-
-                    } else if (current_char == '\'') {
-                        std::string character;
-                        character += current_char;
-                        while (++i < line.length() && (current_char = line[i]) != '\'') {
-                            character += current_char;
-                        }
-                        character += current_char;
-                        tokens.emplace_back(Token{CHARACTER, character, current_pos, row, line});
-                    } else {
-                        tokens.emplace_back(Token{match_to_prime_keyword(std::string(1, current_char)), std::string(1, current_char), current_pos, row, line});
-                    }
-                } else if (std::isalpha(current_char) || (std::isdigit(current_char) && std::isalpha(previous_char))) {
-                    keyword += current_char;
-                } else if (std::isdigit(current_char)) {
-                    std::string number;
-                    do {
-                        number += current_char;
-                        current_char = line[++i];
-                    } while (std::isdigit(current_char));
-                    tokens.emplace_back(Token{NUMBER, number, current_pos, row, line});
-                    i--;
-                } else {
-                    prime_error::lexer::log_error(compiletime_start, 511, current_pos, row, current_char, line);
-                    prime_error::lexer::note_error(compiletime_start, log_file, 511, current_pos, row, current_char, line);
+            if (std::isspace(current_char)) {
+              //prime_error::lexer::log_error(compiletime_start, 511, current_pos, row, current_char, line);
+              //prime_error::lexer::error_counter(1);
+                /*
+                if(prime_error::lexer::error_counter() == 0) {
+                    ANSI_COLOR_OUTPUT("ERROR\n", "BrightRed");
                 }
-                previous_char = current_char;
+                if (isalpha(previous_char)) {
+                    tokens.emplace_back(Token{match_to_prime_keyword(std::string(1, current_char)), std::string(1, current_char), current_pos, row, line});
+                    keyword.clear();
+                }
+                //tokens.emplace_back(Token{SPACE, " "}); PRETTY UNECESSARY
+                //If error, do error and "continue;"
+                */
+            } else if (!std::isalnum(current_char)) {
+                if (std::isalpha(previous_char)) {
+                    tokens->emplace_back(Token{match_to_prime_keyword(std::string(1, current_char)), std::string(1, current_char), current_pos, row, line});
+                    keyword.clear();
+                }
+                if(current_char == '§') {
+                    if((input_string_stream.get() && input_string_stream.peek() == '§')) {
+
+                    }
+                    continue;
+                }
+
+                if (current_char == '\"') {
+                    std::string message;
+                    message += current_char;
+                    while (input_string_stream.peek() != EOF && (current_char = input_string_stream.get()) != '\"') {
+                        message += current_char;
+                        if (current_char == '\\') {
+                            message += input_string_stream.get();
+                        }
+                    }
+                    message += current_char;
+                    tokens->emplace_back(Token{MESSAGE, message, current_pos, row, line});
+
+                } else if (current_char == '\'') {
+                    std::string character;
+                    character += current_char;
+                    while (input_string_stream.peek() != EOF && (current_char = input_string_stream.get()) != '\'') {
+                        character += current_char;
+                    }
+                    character += current_char;
+                    tokens->emplace_back(Token{CHARACTER, character, current_pos, row, line});
+                } else {
+                    tokens->emplace_back(Token{match_to_prime_keyword(std::string(1, current_char)), std::string(1, current_char), current_pos, row, line});
+                }
+            } else if (std::isalpha(current_char) || (std::isdigit(current_char) && std::isalpha(previous_char))) {
+                keyword += current_char;
+            } else if (std::isdigit(current_char)) {
+                std::string number;
+                do {
+                    number += current_char;
+                    current_char = input_string_stream.get();
+                } while (std::isdigit(current_char));
+                tokens->emplace_back(Token{NUMBER, number, current_pos, row, line});
+                input_string_stream.unget();
+            } else {
+                prime_error::lexer::log_error(compiletime_start, 511, current_pos, row, current_char, line);
+                prime_error::lexer::note_error(compiletime_start, log_file, 511, current_pos, row, current_char, line);
             }
+            previous_char = current_char;
         }
-        return tokens;
     }
+    return *tokens;
+    delete tokens;
+}
+
 };
-/*
+
 class Parser {
     void expects() {
         //expects the next token to be a certain type
@@ -210,7 +221,7 @@ class Parser {
 class Linker {
     //The linker will take the AST and link up headers and other files that are `liberated` from
 };
-*/
+
 
 class CPP {
     public:
@@ -262,23 +273,23 @@ int main(int argc, char** argv) {
 
     Lexer lexer;
     //Parser parser
-    std::vector<Token> tokens = lexer.lex(compiletime_start, &log_file, &prime_file);
+    std::vector<Token>* tokens = new std::vector<Token> {lexer.lex(compiletime_start, &log_file, &prime_file)};
     
     //prime_file.close(); // Deallocate memory
     
     switch(prime_settings::debug_mode) {
         case true:
-            ANSI_COLOR_OUTPUT(("Vector size: " + std::to_string(tokens.size()) + "\n\n"), "BrightGreen",{"Italic"});
+            ANSI_COLOR_OUTPUT(("Vector size: " + std::to_string(tokens->size()) + "\n\n"), "BrightGreen",{"Italic"});
             break;
         default: 
-            std::cout << tokens.size() << "\n\n";
+            std::cout << tokens->size() << "\n\n";
             break;
     }
     
     switch(prime_settings::debug_mode) {
         case true:
-            for(int i = 0; i < tokens.size(); i++) {
-                std::cout << "[" << tokens[i].type << ":" << tokens[i].value << "|" << tokens[i].position << "|" << tokens[i].row << "|" << tokens[i].line << "]" << std::endl << std::flush;
+            for(const Token& i : *tokens) {
+                std::cout << "[" << i.type << ":" << i.value << "|" << i.position << "|" << i.row << "|" << i.line << "]" << std::endl << std::flush;
             }
             break;
         default: 
@@ -291,12 +302,16 @@ int main(int argc, char** argv) {
    
     log_file.close();
 
+    delete tokens;
+
     auto main_compiletime_stop = std::chrono::high_resolution_clock::now();
 
     auto main_compiletime_duration = std::chrono::duration_cast<std::chrono::milliseconds>(main_compiletime_stop - main_compiletime_start);
     
+    //auto main_compiletime_duration = std::chrono::duration_cast<std::chrono::microseconds>(main_compiletime_stop - main_compiletime_start);
+    
     std::ofstream COMPILETIME_TEST; // COMMENT OUT LATER
-    COMPILETIME_TEST.open("compiler_core_compiletime_test.txt", std::ios::app);
+    COMPILETIME_TEST.open("compiler_core_peek_compiletime_test.txt", std::ios::app);
     
     /*
     switch(prime_settings::debug_mode) {
