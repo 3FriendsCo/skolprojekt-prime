@@ -119,8 +119,9 @@ public:
             previous_char = current_char;
         }
     }
-    return *tokens;
+    std::vector<Token> token_list = *tokens;
     delete tokens;
+    return token_list;
 }
 
 };
