@@ -19,24 +19,6 @@ static void log_usage(char** argv, int argc) { // Logs the usage of the program
     ANSI_COLOR_OUTPUT(("USAGE: [" + std::to_string(argc) + "] " + "<" + argv[0] + ">\n"), "BrightYellow",{"Italic","Bold","Underline"});
 }
 
-struct Token {
-    Token_type type;
-    std::string value;
-    //META DATA:
-    int position, row;
-    std::string line;
-};
-
-/*
-
-struct AST_node {
-    AST_node_type type;
-    int value;
-    std::vector<AST_node*> children;
-};
-
-*/
-
 class Lexer {
 public:
     std::vector<Token> lex(clock_t compiletime_start, std::ofstream* log_file, std::ifstream* prime_file) {
@@ -54,8 +36,8 @@ public:
             current_char = input_string_stream.get();
 
             if (std::isspace(current_char)) {
-              //prime_error::lexer::log_error(compiletime_start, 511, current_pos, row, current_char, line);
-              //prime_error::lexer::error_counter(1);
+                prime_error::lexer::log_error(compiletime_start, 511, current_pos, row, current_char, line);
+                prime_error::lexer::error_counter(1);
                 /*
                 if(prime_error::lexer::error_counter() == 0) {
                     ANSI_COLOR_OUTPUT("ERROR\n", "BrightRed");
@@ -67,18 +49,20 @@ public:
                 //tokens.emplace_back(Token{SPACE, " "}); PRETTY UNECESSARY
                 //If error, do error and "continue;"
                 */
+                continue;
             } else if (!std::isalnum(current_char)) {
                 if (std::isalpha(previous_char)) {
                     tokens->emplace_back(Token{match_to_prime_keyword(std::string(1, current_char)), std::string(1, current_char), current_pos, row, line});
                     keyword.clear();
                 }
+                /*
                 if(current_char == '§') {
                     if((input_string_stream.get() && input_string_stream.peek() == '§')) {
 
                     }
                     continue;
                 }
-
+                */
                 if (current_char == '\"') {
                     std::string message;
                     message += current_char;
@@ -127,90 +111,86 @@ public:
 };
 
 class Parser {
-    void expects() {
-        //expects the next token to be a certain type
-    }
-    
     public:
-    std::vector<AST_node> parse(std::vector<Token>& tokens) {
+    std::vector<AST_node> parse(std::vector<Token>& tokens, clock_t& compiletime_start, int current_pos, int row, char current_char, const std::string& line) {
         std::vector<AST_node> AST;
         for(int i = 0; i < tokens.size(); i++) {
             switch(tokens[i].type) {
-                case SEIZE: Pre_processor::Seize(&AST); break;
-                case LIBERATE: Pre_processor::Liberate(&AST); break;
-                case BANISH: Pre_processor::Banish(&AST); break;
+                case SEIZE: Pre_processor::Seize(&AST, compiletime_start, current_pos, row, current_char, line); break;
+                case LIBERATE: Pre_processor::Liberate(&AST, compiletime_start, current_pos, row, current_char, line); break;
+                case BANISH: Pre_processor::Banish(&AST, compiletime_start, current_pos, row, current_char, line); break;
               //case FORCE: Pre_processor::force(&AST); break;
-                case GLOBAL: Attribute::Global(&AST); break;
-                case STATIC: Attribute::Static(&AST); break;
-                case CONST: Attribute::Const(&AST); break;
-                case MAIN: Function::Main(&AST); break;
-                case FUNCTION: Function::Function(&AST); break;
-                case RETURN: Function::Return(&AST); break;
-                case USING: Scope::Using(&AST); break;
-                case ENUM: Scope::Enum(&AST); Complex_type::Enum(&AST); break;
-                case NAMESPACE: Scope::Namespace(&AST); break;
-                case STRUCT: Complex_type::Struct(&AST); break;
-                case CLASS: Complex_type::Class(&AST); break;
-                case UNSIGNED: Attribute::Unsigned(&AST); break;
-                case SHORT: Primitive_type::Numeric_type::Short(&AST); break;
-                case INT: Primitive_type::Numeric_type::Int(&AST); break;
-                case LONG: Primitive_type::Numeric_type::Long(&AST); break;
-                case FLOAT: Primitive_type::Numeric_type::Float(&AST); break;
-                case DOUBLE: Primitive_type::Numeric_type::Double(&AST); break;
-                case BOOLEAN: Primitive_type::Boolean(&AST); break;
-                case CHAR: Primitive_type::Char(&AST); break;
-                case STRING: Nonprimitive_type::String(&AST); break;
-                case IF: Conditional_statement::If(&AST); break;
-                case ELSE: Conditional_statement::Else(&AST); break;
-                case CONTINUE: Control_flow_statement::Continue(&AST); break;
-                case BREAK: Control_flow_statement::Break(&AST); break;
-                case WHILE: Loop::While(&AST); break;
-                case LOOP: Loop::Loop(&AST); break;
-                case FOR: Loop::For(&AST); break;
-                case SWITCH: Conditional_statement::Switch(&AST); break;
+                case GLOBAL: Attribute::Global(&AST, compiletime_start, current_pos, row, current_char, line); break;
+                case STATIC: Attribute::Static(&AST, compiletime_start, current_pos, row, current_char, line); break;
+                case CONST: Attribute::Const(&AST, compiletime_start, current_pos, row, current_char, line); break;
+                case MAIN: Function::Main(&AST, compiletime_start, current_pos, row, current_char, line); break;
+                case FUNCTION: Function::Function(&AST, compiletime_start, current_pos, row, current_char, line); break;
+                case RETURN: Function::Return(&AST, compiletime_start, current_pos, row, current_char, line); break;
+                case USING: Scope::Using(&AST, compiletime_start, current_pos, row, current_char, line); break;
+                case ENUM: Scope::Enum(&AST, compiletime_start, current_pos, row, current_char, line); Complex_type::Enum(&AST, compiletime_start, current_pos, row, current_char, line); break;
+                case NAMESPACE: Scope::Namespace(&AST, compiletime_start, current_pos, row, current_char, line); break;
+                case STRUCT: Complex_type::Struct(&AST, compiletime_start, current_pos, row, current_char, line); break;
+                case CLASS: Complex_type::Class(&AST, compiletime_start, current_pos, row, current_char, line); break;
+                case UNSIGNED: Attribute::Unsigned(&AST, compiletime_start, current_pos, row, current_char, line); break;
+                case SHORT: Primitive_type::Numeric_type::Short(&AST, compiletime_start, current_pos, row, current_char, line); break;
+                case INT: Primitive_type::Numeric_type::Int(&AST, compiletime_start, current_pos, row, current_char, line); break;
+                case LONG: Primitive_type::Numeric_type::Long(&AST, compiletime_start, current_pos, row, current_char, line); break;
+                case FLOAT: Primitive_type::Numeric_type::Float(&AST, compiletime_start, current_pos, row, current_char, line); break;
+                case DOUBLE: Primitive_type::Numeric_type::Double(&AST, compiletime_start, current_pos, row, current_char, line); break;
+                case BOOLEAN: Primitive_type::Boolean(&AST, compiletime_start, current_pos, row, current_char, line); break;
+                case CHAR: Primitive_type::Char(&AST, compiletime_start, current_pos, row, current_char, line); break;
+                case STRING: Nonprimitive_type::String(&AST, compiletime_start, current_pos, row, current_char, line); break;
+                case IF: Conditional_statement::If(&AST, compiletime_start, current_pos, row, current_char, line); break;
+                case ELSE: Conditional_statement::Else(&AST, compiletime_start, current_pos, row, current_char, line); break;
+                case CONTINUE: Control_flow_statement::Continue(&AST, compiletime_start, current_pos, row, current_char, line); break;
+                case BREAK: Control_flow_statement::Break(&AST, compiletime_start, current_pos, row, current_char, line); break;
+                case WHILE: Loop::While(&AST, compiletime_start, current_pos, row, current_char, line); break;
+                case LOOP: Loop::Loop(&AST, compiletime_start, current_pos, row, current_char, line); break;
+                case FOR: Loop::For(&AST, compiletime_start, current_pos, row, current_char, line); break;
+                case SWITCH: Conditional_statement::Switch(&AST, compiletime_start, current_pos, row, current_char, line); break;
                 
-                case BASIC_NAMESPACE: Native_namespace::Basic_Namespace(&AST); break;
-                case LOG: IO::Log(&AST); break;
-                case FORMATTED_LOG: IO::Formatted_Log(&AST); break;
-                case READ: IO::Read(&AST); break;
-                case FORMATTED_READ: IO::Formatted_Read(&AST); break;
-                case WRITE: IO::Write(&AST); break;
-                case FORMATTED_WRITE: IO::Formatted_Write(&AST); break;
+                case BASIC_NAMESPACE: Native_namespace::Basic_Namespace(&AST, compiletime_start, current_pos, row, current_char, line); break;
+                case LOG: IO::Log(&AST, compiletime_start, current_pos, row, current_char, line); break;
+                case FORMATTED_LOG: IO::Formatted_Log(&AST, compiletime_start, current_pos, row, current_char, line); break;
+                case READ: IO::Read(&AST, compiletime_start, current_pos, row, current_char, line); break;
+                case FORMATTED_READ: IO::Formatted_Read(&AST, compiletime_start, current_pos, row, current_char, line); break;
+                case WRITE: IO::Write(&AST, compiletime_start, current_pos, row, current_char, line); break;
+                case FORMATTED_WRITE: IO::Formatted_Write(&AST, compiletime_start, current_pos, row, current_char, line); break;
               //case NOTE: Note(&AST); break;
               //case FILE_TOKEN: File(&AST);
-                case DOT: Symbol::Dot(&AST); break;
-                case COMMA: Symbol::Comma(&AST); break;
-                case COLON: Symbol::Colon(&AST); break;
-                case SEMICOLON: Symbol::Semicolon(&AST); break;
-                case QUESTIONMARK: Symbol::Questionmark(&AST); break;
-                case EXCLAMATIONPOINT: Symbol::Exclamationpoint(&AST); break;
-                case SINGLE_QOUTE: Symbol::Single_Qoute(&AST); break;
-                case DOUBLE_QOUTE: Symbol::Double_Qoute(&AST); break;
-                case L_PAREN: Symbol::Left_Parenthesis(&AST); break;
-                case R_PAREN: Symbol::Right_Parenthesis(&AST); break;
-                case L_CURLBRACKET: Symbol::Left_Curlybracket(&AST); break;
-                case R_CURLBRACKET: Symbol::Right_Curlybracket(&AST); break;
-                case L_BRACKET: Symbol::Left_Bracket(&AST); break;
-                case R_BRACKET: Symbol::Right_Bracket(&AST); break;
-                case LINE: Symbol::Line(&AST); break;
-                case HASH: Symbol::Hash(&AST); break;
-                case AT_S: Symbol::At_Symbol(&AST); break;
-                case DOLLAR: Symbol::Dollar(&AST); break;
-                case REFERENCE_S: Symbol::Reference_Symbol(&AST); break;
-                case PROCENT_S: Symbol::Procent_Symbol(&AST); break;
-                case AND_S: Symbol::And_Symbol(&AST); break;
-                case UNDERLINE: Symbol::Underline(&AST); break;
-                case B_SLASH: Symbol::Back_Slash(&AST); break;
-                case BACKTICK: Symbol::Backtick(&AST); break;
-                case CIRCUMFLEX: Symbol::Circumflex(&AST); break;
-                case TILDE: Symbol::Tilde(&AST); break;
-                case SECTION_S: Symbol::Section_Symbol(&AST); break;
-                case PLUS: Symbol::Plus(&AST); break;
-                case MINUS: Symbol::Minus(&AST); break;
-                case ASTRISK: Symbol::Astrisk(&AST); break;
-                case F_SLASH: Symbol::Forward_Slash(&AST); break;
-                case LESS_THAN: Symbol::Less_Than(&AST); break;
-                case GREATER_THAN: Symbol::Greater_Than(&AST); break;
+                case DOT: Symbol::Dot(&AST, compiletime_start, current_pos, row, current_char, line); break;
+                case COMMA: Symbol::Comma(&AST, compiletime_start, current_pos, row, current_char, line); break;
+                case COLON: Symbol::Colon(&AST, compiletime_start, current_pos, row, current_char, line); break;
+                case SEMICOLON: Symbol::Semicolon(&AST, compiletime_start, current_pos, row, current_char, line); break;
+                case QUESTIONMARK: Symbol::Questionmark(&AST, compiletime_start, current_pos, row, current_char, line); break;
+                case EXCLAMATIONPOINT: Symbol::Exclamationpoint(&AST, compiletime_start, current_pos, row, current_char, line); break;
+                case SINGLE_QOUTE: Symbol::Single_Qoute(&AST, compiletime_start, current_pos, row, current_char, line); break;
+                case DOUBLE_QOUTE: Symbol::Double_Qoute(&AST, compiletime_start, current_pos, row, current_char, line); break;
+                case L_PAREN: Symbol::Left_Parenthesis(&AST, compiletime_start, current_pos, row, current_char, line); break;
+                case R_PAREN: Symbol::Right_Parenthesis(&AST, compiletime_start, current_pos, row, current_char, line); break;
+                case L_CURLBRACKET: Symbol::Left_Curlybracket(&AST, compiletime_start, current_pos, row, current_char, line); break;
+                case R_CURLBRACKET: Symbol::Right_Curlybracket(&AST, compiletime_start, current_pos, row, current_char, line); break;
+                case L_BRACKET: Symbol::Left_Bracket(&AST, compiletime_start, current_pos, row, current_char, line); break;
+                case R_BRACKET: Symbol::Right_Bracket(&AST, compiletime_start, current_pos, row, current_char, line); break;
+                case LINE: Symbol::Line(&AST, compiletime_start, current_pos, row, current_char, line); break;
+                case HASH: Symbol::Hash(&AST, compiletime_start, current_pos, row, current_char, line); break;
+                case AT_S: Symbol::At_Symbol(&AST, compiletime_start, current_pos, row, current_char, line); break;
+                case DOLLAR: Symbol::Dollar(&AST, compiletime_start, current_pos, row, current_char, line); break;
+                case REFERENCE_S: Symbol::Reference_Symbol(&AST, compiletime_start, current_pos, row, current_char, line); break;
+                case PROCENT_S: Symbol::Procent_Symbol(&AST, compiletime_start, current_pos, row, current_char, line); break;
+                case AND_S: Symbol::And_Symbol(&AST, compiletime_start, current_pos, row, current_char, line); break;
+                case UNDERLINE: Symbol::Underline(&AST, compiletime_start, current_pos, row, current_char, line); break;
+                case B_SLASH: Symbol::Back_Slash(&AST, compiletime_start, current_pos, row, current_char, line); break;
+                case BACKTICK: Symbol::Backtick(&AST, compiletime_start, current_pos, row, current_char, line); break;
+                case CIRCUMFLEX: Symbol::Circumflex(&AST, compiletime_start, current_pos, row, current_char, line); break;
+                case TILDE: Symbol::Tilde(&AST, compiletime_start, current_pos, row, current_char, line); break;
+                case SECTION_S: Symbol::Section_Symbol(&AST, compiletime_start, current_pos, row, current_char, line); break;
+                case PLUS: Symbol::Plus(&AST, compiletime_start, current_pos, row, current_char, line); break;
+                case MINUS: Symbol::Minus(&AST, compiletime_start, current_pos, row, current_char, line); break;
+                case ASTRISK: Symbol::Astrisk(&AST, compiletime_start, current_pos, row, current_char, line); break;
+                case F_SLASH: Symbol::Forward_Slash(&AST, compiletime_start, current_pos, row, current_char, line); break;
+                case LESS_THAN: Symbol::Less_Than(&AST, compiletime_start, current_pos, row, current_char, line); break;
+                case GREATER_THAN: Symbol::Greater_Than(&AST, compiletime_start, current_pos, row, current_char, line); break;
 
                 default: Unknown::Unknown(&AST); break;
             }

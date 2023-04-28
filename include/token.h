@@ -66,6 +66,14 @@ enum Token_type{
     LESS_THAN = 132,GREATER_THAN = 133
 };
 
+struct Token {
+    Token_type type;
+    std::string value;
+    //META DATA:
+    int position, row;
+    std::string line;
+};
+
 Token_type match_to_prime_keyword(const std::string &keyword) {
     static const std::unordered_map<std::string, Token_type> prime_keywords = {
         {"seize", SEIZE}, {"liberate", LIBERATE}, {"banish", BANISH},
