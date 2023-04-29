@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include <fstream>
 
 namespace prime_settings {
   bool debug_mode = false; // AJAJAJ compiler_core kommer skrika utan "debug_mode = false/true;"

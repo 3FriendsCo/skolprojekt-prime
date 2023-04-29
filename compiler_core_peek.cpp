@@ -23,7 +23,7 @@ class Lexer {
 public:
     std::vector<Token> lex(clock_t compiletime_start, std::ofstream* log_file, std::ifstream* prime_file) {
     int current_pos, row = 0;
-    char current_char, previous_char = 0;
+    char current_char = '\0', previous_char = '\0';
     std::vector<Token>* tokens = new std::vector<Token> {};
     std::string keyword, line;
 
