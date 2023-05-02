@@ -54,6 +54,7 @@ class Lexer {
         char current_char = '\0', prev_char = '\0';
         std::shared_ptr<std::vector<token>> tokens = std::make_shared<std::vector<token>>();
         std::string keyword;
+<<<<<<< HEAD
         if(p_file.is_open()) {
             if(p_file.peek() == EOF) {
                 std::cerr << "Empty compilable (file)" << "\n" << std::flush;
@@ -112,11 +113,29 @@ class Lexer {
                     }
                 } else {
                     //INVALID CHARACTER
+=======
+        if(prime_file) {
+            if(prime_file.peek() == EOF) {
+                std::cerr << "Empty compilable" << "\n" << std::flush;
+                exit(1);
+            }
+            while(prime_file.peek() != EOF) {
+                if(isspace(prime_file.peek())) {
+                    current_char = prime_file.get();
+                } else if(isdigit(prime_file.peek())) {
+
+                } else if(isalpha(prime_file.peek())) {
+
+                } else if(isascii(prime_file.peek())) {
+                    
+                } else {
+                    //INVALID CHARACTER # UNSUPPORTED CHARACTER
+>>>>>>> 37120f7f3ae5ca2410e2de27747f5d7a1c531191
                 }
             }
         } else {
             //CONNECT TO "error.h" library later
-            std::cerr << "Could not open compilable (file)\n";
+            std::cerr << "Could not open compilable\n";
             std::cerr << "\t- Compilable not found, Compilable does not exist\n";
             std::cerr << "\t- Compilable filepath might be wrong, check it\n";
             exit(1);
@@ -143,9 +162,15 @@ struct AST_node {
 };
 
 class Parser {
+    token get_token(int index, std::shared_ptr<std::vector<token>> tokens) { 
+        token this_token = (*tokens)[index];
+        return this_token;
+    }
     public:
     std::shared_ptr<std::vector<AST_node*>> parse(std::shared_ptr<std::vector<token>> tokens) {
         auto AST = std::make_shared<std::vector<AST_node*>>();
+        int index;
+        get_token(index, tokens);
         return AST;
     }
 };
@@ -180,17 +205,27 @@ class Linker {
 int main(int argc, char **argv) {
     if(argc < 2) {std::cerr << "USAGE: " << argv[0] << "\n" << std::flush;/*exit(1);*/}
     auto main_compiletime_start = std::chrono::high_resolution_clock::now();
-
     // Code goes here
+<<<<<<< HEAD
     std::ifstream p_file("code.pri");
     std::unique_ptr<Lexer> lexer(new Lexer(p_file));
     Parser parser;
     std::shared_ptr<std::vector<AST_node*>> AST = parser.parse(lexer->tokens);
     /*
     for(token& i:*lexer.tokens) {
+=======
+    std::string filename = "code.pri";
+    //std::cin >> filename;
+    std::ifstream prime_file; prime_file.open(filename);
+    std::unique_ptr<Lexer> lexer(new Lexer(prime_file));
+    //Parser parser;
+    //std::shared_ptr<std::vector<AST_node*>> AST = parser.parse(lexer->tokens);
+
+    for(token& i:*lexer->tokens) {
+>>>>>>> 37120f7f3ae5ca2410e2de27747f5d7a1c531191
         std::cout << i.type << ":" << i.value << "\n" << std::flush;
     }
-    */
+
     auto main_compiletime_stop = std::chrono::high_resolution_clock::now();
     auto main_compiletime_duration = std::chrono::duration_cast<std::chrono::milliseconds>(main_compiletime_stop - main_compiletime_start);
     std::cerr << std::to_string(main_compiletime_duration.count()) << "\n" << std::flush;
