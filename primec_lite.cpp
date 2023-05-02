@@ -11,7 +11,7 @@ struct AST_node {
         PREP_SEIZE,
         PREP_LIBERATE,
         PREP_FORCE,
-        PREPP_BAN
+        PREP_BAN
     };
     Node_type type;
     std::string value;

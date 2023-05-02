@@ -3,6 +3,7 @@
 #include <string>
 #include <locale>
 #include <sstream>
+#include <cctype>
 #include <chrono>
 #include <vector>
 #include <unordered_map>
@@ -13,15 +14,33 @@ enum token_type {
     NUMBER = 0,
     STR_LITERAL = 1,
     CHAR_LITERAL = 2,
-    //KEYWORDS:
+    // KEYWORDS:
 
-    //SYMBOLS:
+    // SYMBOLS:
     F_SLASH,
-    ASTRIKS
+    ASTRIKS,
+// Logical Operators:
+    // Comparison Operators:
+    EQUALS,
+    EQUAL_TO,
+    IDENTICAL_TO,
+
+    NOT_EQUAL_TO,
+    NOT_IDENTICAL_TO,
+
+    GREATER_THAN,
+    GREATER_THAN_OR_EQUAL_TO,
+    GREATER_THAN_OR_IDENTICAL_TO,
+    
+    LESS_THAN,
+    LESS_THAN_OR_EQUAL_TO,
+    LESS_THAN_OR_IDENTICAL_TO,
 };
 
 struct Instructions {
-
+    // Registers
+    // push/pop
+    // ADD, SUB, MUL, DIV, MOD
 };
 
 struct token {
@@ -30,93 +49,70 @@ struct token {
 };
 
 class Lexer {
-    std::shared_ptr<std::vector<token>> lex(std::ifstream& prime_file) {
+    std::shared_ptr<std::vector<token>> lex(std::ifstream& p_file) {
         int current_pos = 0, row = 0;
         char current_char = '\0', prev_char = '\0';
         std::shared_ptr<std::vector<token>> tokens = std::make_shared<std::vector<token>>();
         std::string keyword;
-        if(prime_file.is_open()) {
-            if(prime_file.peek() == EOF) {
+        if(p_file.is_open()) {
+            if(p_file.peek() == EOF) {
                 std::cerr << "Empty compilable (file)" << "\n" << std::flush;
                 exit(1);
             }
-            while(prime_file.peek() != EOF) {
-                if(isspace(prime_file.peek())) {// current character is a space
-                    prime_file.ignore(1);
-                    continue;
-                } else if(isalpha(prime_file.peek())) {// current character is a character
-                    current_char = prime_file.get();
-                    while(isalnum(current_char)) {
-                        keyword += current_char;
-                        current_char = prime_file.get();
+            while(p_file.peek() != EOF) {
+                if(isspace(p_file.peek())) {
+
+                } else if(isdigit(p_file.peek())) {
+                    
+                } else if(isdigit(p_file.peek())) {
+
+                } else if(isalpha(p_file.peek())) {
+
+                } else if(ispunct(p_file.peek())) {
+                    current_char = p_file.get();
+                    switch(current_char) {
+                        case '+': switch(p_file.peek()) {
+                            default: current_char = p_file.peek(); break; // ignore, lex as: '+'
+                            case '=': current_char = p_file.peek();break; // logical operator: "+="
+                            case ' ': current_char = p_file.peek();break; // ignore, lex as: '+'
+                            case '+': current_char = p_file.peek();break; // incremental operator: "++"
+                        }
+                        break;
+                        case '-': switch(p_file.peek()) {
+                            default: break;
+                            case '=': break;
+                            case ' ': break;
+                            case '-': break;
+                        }
+                        break;
+                        case '*': switch(p_file.peek()) {
+                            default: break;
+                            case '=': break;
+                            case ' ': break;
+                            case '+': break;
+                        } 
+                        break;
+                        case '/':  switch(p_file.peek()) {
+                            default: break;
+                            case '=': break;
+                            case ' ': break;
+                            case '+': break;
+                        }
+                        break; // It is a logical operator
+                        case '%': break; // It is a logical operator
+                        case '^': break; // It is a logical operator
+                        case '_': 
                     }
-                    tokens->emplace_back(token{NUMBER,/*Call token type finder,*/ keyword});
-                } else if(isdigit(prime_file.peek())) {// current_char is a digit
-                    std::string number(1, current_char);
-                    while(isdigit(current_char)) {
-                        number += current_char;
-                        current_char = prime_file.get();
+                } else if(isascii(p_file.peek())) {
+                    if(isprint(p_file.peek())) {
+                        tokens->emplace_back(token{NUMBER,"DAS"});
+                    } else {
+                        // CHARACTER CANNOT BE PRINTED!
+                        // LIBERATE CORRECT LOCALE
                     }
-                    tokens->emplace_back(token{NUMBER, number});
-                } else {// current_char is a symbol
-                    if(current_char == '\"') {
-                        std::string message(current_char, 1);
-                        while(current_char != '\"') {
-                            current_char = prime_file.get();
-                            if(prime_file.eof()) {
-                                // Error: end of file reached before finding closing quotation mark
-                                tokens->emplace_back(token{ERROR, "Unclosed string literal"});
-                                return tokens;
-                            }
-                            if(current_char == '\\') {
-                                message += current_char;
-                                current_char = prime_file.get();
-                            }
-                            message += current_char;
-                        }
-                        tokens->emplace_back(token{STR_LITERAL, message});
-                    } else if(current_char == '\'') {
-                        std::string character(current_char, 1);
-                        while(current_char != '\'') {
-                            current_char = prime_file.get();
-                            if(prime_file.eof()) {
-                                // Error: end of file reached before finding closing quotation mark
-                                tokens->emplace_back(token{ERROR, "Unclosed character literal"});
-                                return tokens;
-                            }
-                            if(current_char == '\\') {
-                                character += current_char;
-                                current_char = prime_file.get();
-                            }
-                            character += current_char;
-                        }
-                            tokens->emplace_back(token{CHAR_LITERAL, character});
-                    } else if(current_char == '/') {
-                        if(prime_file.peek() == '/') { // it is a comment
-                            prime_file.ignore(std::numeric_limits<std::streamsize>::max(), '\n');  // ignore until end of line
-                        } else if(prime_file.peek() == '*') { // it is a multiline-comment
-                            prime_file.ignore(std::numeric_limits<std::streamsize>::max(), '*');
-                            if(prime_file.get() == '/') {
-                                current_char = prime_file.get();
-                            } else {
-                                tokens->emplace_back(token{ASTRIKS, std::string(current_char, 1)});
-                            }
-                        } else {
-                            tokens->emplace_back(token{F_SLASH, std::string(current_char, 1)});
-                        }
-                    } else if(current_char == '+'||current_char == '-'||current_char == '='||current_char == '<'||current_char == '>'||current_char == '/'||current_char == '*'||current_char == '%') {
-                        prev_char = current_char;
-                        if(prime_file.peek() == '+'||prime_file.peek() == '-'||prime_file.peek() == '='||prime_file.peek() == '<'||prime_file.peek() == '>'||prime_file.peek() == '/'||prime_file.peek() == '*'||prime_file.peek() == '%') {
-                            // This means that the keyword that is read is a logical operator and can be lexed as one
-                            tokens->emplace_back(token{NUMBER/*match_prime_operator(current_char, prev_char)*/});
-                        } else {
-                            //Lex as the standalone symbol
-                            tokens->emplace_back(token{NUMBER/*match_prime_keyword(current_char)*/, std::string(current_char,1)});
-                        }
-                    }
+                } else {
+                    //INVALID CHARACTER
                 }
-                prev_char = current_char;
-                current_char = prime_file.get();
             }
         } else {
             //CONNECT TO "error.h" library later
@@ -125,12 +121,12 @@ class Lexer {
             std::cerr << "\t- Compilable filepath might be wrong, check it\n";
             exit(1);
         }
-        prime_file.close();
+        p_file.close();
         return tokens;
     }
     public:
     std::shared_ptr<std::vector<token>> tokens;
-    Lexer(std::ifstream& prime_file): tokens(lex(prime_file)){
+    Lexer(std::ifstream& p_file): tokens(lex(p_file)){
         std::cout << "LEXED:\n";
     }
 };
@@ -186,8 +182,8 @@ int main(int argc, char **argv) {
     auto main_compiletime_start = std::chrono::high_resolution_clock::now();
 
     // Code goes here
-    std::ifstream prime_file("code.pri");
-    std::unique_ptr<Lexer> lexer(new Lexer(prime_file));
+    std::ifstream p_file("code.pri");
+    std::unique_ptr<Lexer> lexer(new Lexer(p_file));
     Parser parser;
     std::shared_ptr<std::vector<AST_node*>> AST = parser.parse(lexer->tokens);
     /*
