@@ -1,5 +1,5 @@
 seize;
-liberate interface;
+liberate interface, filestream;
 
 main() {
     log("Hello World!");

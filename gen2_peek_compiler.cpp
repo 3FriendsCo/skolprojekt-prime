@@ -9,16 +9,22 @@
 #include <unordered_map>
 #include <memory>
 
+#include "include/keywords.h"
+
 enum token_type {
     ERROR = -1,
-    NUMBER = 0,
+    NUM_LITERAL = 0,
     STR_LITERAL = 1,
     CHAR_LITERAL = 2,
     // KEYWORDS:
-
+    KEYWORD,
     // SYMBOLS:
-    F_SLASH,
+    PLUS,
+    MINUS,
     ASTRIKS,
+    F_SLASH,
+    PROCENT,
+    SQUARED,
 // Logical Operators:
     // Comparison Operators:
     EQUALS,
@@ -35,6 +41,18 @@ enum token_type {
     LESS_THAN,
     LESS_THAN_OR_EQUAL_TO,
     LESS_THAN_OR_IDENTICAL_TO,
+
+    // Incremental operators:
+    PLUS_PLUS,
+    MINUS_MINUS,
+    
+    PLUS_EQUALS,
+    MINUS_EQUALS,
+    MUL_EQUALS,
+    DIV_EQUALS,
+    MOD_EQUALS,
+    SQ_EQUALS,
+    SQRT_EQUALS
 };
 
 struct Instructions {
@@ -63,66 +81,30 @@ class Lexer {
                 if(isspace(p_file.peek())) {
 
                 } else if(isdigit(p_file.peek())) {
-                    
-                } else if(isdigit(p_file.peek())) {
-
-                } else if(isalpha(p_file.peek())) {
-
-                } else if(ispunct(p_file.peek())) {
                     current_char = p_file.get();
-                    switch(current_char) {
-                        case '+': switch(p_file.peek()) {
-                            default: current_char = p_file.peek(); break; // ignore, lex as: '+'
-                            case '=': current_char = p_file.peek();break; // logical operator: "+="
-                            case ' ': current_char = p_file.peek();break; // ignore, lex as: '+'
-                            case '+': current_char = p_file.peek();break; // incremental operator: "++"
-                        }
-                        break;
-                        case '-': switch(p_file.peek()) {
-                            default: break;
-                            case '=': break;
-                            case ' ': break;
-                            case '-': break;
-                        }
-                        break;
-                        case '*': switch(p_file.peek()) {
-                            default: break;
-                            case '=': break;
-                            case ' ': break;
-                            case '+': break;
-                        } 
-                        break;
-                        case '/':  switch(p_file.peek()) {
-                            default: break;
-                            case '=': break;
-                            case ' ': break;
-                            case '+': break;
-                        }
-                        break; // It is a logical operator
-                        case '%': break; // It is a logical operator
-                        case '^': break; // It is a logical operator
-                        case '_': 
+                    std::string num_literal = std::string(current_char, 1);
+                    while(isdigit(p_file.peek())) {
+                        current_char = p_file.get();
+                        num_literal += std::string(current_char, 1);
                     }
-                } else if(isascii(p_file.peek())) {
-                    if(isprint(p_file.peek())) {
-                        tokens->emplace_back(token{NUMBER,"DAS"});
-                    } else {
-                        // CHARACTER CANNOT BE PRINTED!
-                        // LIBERATE CORRECT LOCALE
+                    if(p_file.peek() == '.') { // MIGHT BE DECIMALPOINT
+                        current_char = p_file.get();
+                        if(isdigit(p_file.peek())) { // WAS A DECIMALPOINT
+                            num_literal += current_char;
+                            while(isdigit(p_file.peek())) {
+                                current_char = p_file.peek();
+                                current_char += current_char;
+                            }
+                        } else {
+                            tokens->emplace_back(token{NUM_LITERAL, num_literal});
+                        }
+                        
+                    } else if(!isspace(p_file.peek())) {
+
                     }
-                } else {
-                    //INVALID CHARACTER
                 }
             }
-        } else {
-            //CONNECT TO "error.h" library later
-            std::cerr << "Could not open compilable\n";
-            std::cerr << "\t- Compilable not found, Compilable does not exist\n";
-            std::cerr << "\t- Compilable filepath might be wrong, check it\n";
-            exit(1);
         }
-        p_file.close();
-        return tokens;
     }
     public:
     std::shared_ptr<std::vector<token>> tokens;
@@ -132,7 +114,7 @@ class Lexer {
 };
 
 enum class Node_type {
-
+    //
 };
 
 struct AST_node {
@@ -191,8 +173,8 @@ int main(int argc, char **argv) {
     std::unique_ptr<Lexer> lexer(new Lexer(p_file));
     Parser parser;
     std::shared_ptr<std::vector<AST_node*>> AST = parser.parse(lexer->tokens);
-    /*
-    for(token& i:*lexer.tokens) {
+
+    for(token& i:*lexer->tokens) {
         std::cout << i.type << ":" << i.value << "\n" << std::flush;
     }
 
@@ -200,5 +182,4 @@ int main(int argc, char **argv) {
     auto main_compiletime_duration = std::chrono::duration_cast<std::chrono::milliseconds>(main_compiletime_stop - main_compiletime_start);
     std::cerr << std::to_string(main_compiletime_duration.count()) << "\n" << std::flush;
     return 0;
-    */
 }
