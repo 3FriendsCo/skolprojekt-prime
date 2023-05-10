@@ -5,16 +5,18 @@ just nu på att få att optimisera och korta ner dess storlek.
 
 Ett av målen med compilern är även att göra den så lite som möjligt för 
 att den ska kunna köras på så små plattformar som möjligt i framtiden.
-Därför började vi på en "lightweight" version: Primec Lite, vilken
+Därför började vi på en "lightweight" version: Primec Lite, vilket
 skulle ha samma sammanställningsförmåga som Primec, men utan vissa
 bibliotek. Ett av dessa biblitek som valts bort är det för 
 errorhantering. Istället för formaterade errors kommer:
+
 "ERROR:" samt en errorkod visas på skärmen.
 Dessutom kom Neo på att själva compilern skulle kunna kortas ner om man
 tog bort lexern helt och istället lät parsern bygga AST trädet baserat
 på vad den läser i .pri filen. Detta skulle frigöra cirka 100 rader
 med text i compilerns filstorlek. AST som generas är en stor lista av
 "node" objekt. Dessa objekt har olika egenskaper och "children".
+
 Om compilern ombes att sammanställa en mycket lång .pri fil skulle det
 innebär en mycket stor mängd data som måste sparas i en lista i RAM.
 För att saker som "Semantic Analysis" ska kunna fungera måste man ha

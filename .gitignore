@@ -5,3 +5,9 @@
 
 # Ignore .exe files
 *.exe
+
+# Ignore tempcoderunnerfile.cpp files
+*tempcoderunnerfile.cpp
+
+# Ignore .log files inside the logs folder due to security risks and uneeded files
+logs/*.log

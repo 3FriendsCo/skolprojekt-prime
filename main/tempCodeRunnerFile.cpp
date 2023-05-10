@@ -1,1 +1,0 @@
-urrent_pos = 1

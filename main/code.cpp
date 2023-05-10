@@ -1,35 +1,25 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <memory>
 #include <string>
 #include <chrono>
 
 #include "../include/error.h"
 #include "../main/include/node.h"
 
-enum type
-{
-    PROGRAM = -4,
-    END_OF_STATEMENT = -3,
-    END_OF_LINE = -2,
-    END_OF_FILE = -1,
-    UNKNOWN, // For testing
-    UNKNOWN_SYMBOL,
-
-    INT_LITERAL,
-    DECI_LITERAL,
-    OMNI_LITERAL,
-};
-
-enum AST_type {
+enum token_type {
 
 };
 
-struct token
-{
-    int keyword_row, keyword_pos;
-    type _type;
+struct token {
+    token_type type;
     std::string value;
+};
+
+class AST_node {
+    public:
+    virtual ~AST_node() = default;
 };
 
 class Lexer
@@ -42,6 +32,7 @@ public:
     }
     ~Lexer()
     {
+        
     }
 
 private:
@@ -147,27 +138,34 @@ private:
     }
 };
 
-class Parser
-{
+class Parser {
     public:
-    Parser() {
+    Parser(std::vector<token> &tokens) {
+        std::vector<AST_node> AST = parse(tokens);
+    }
+    
+    ~Parser() {
 
     }
     private:
-    token getToken()
-    {
-        token _token;
-        return _token;
-    }
+    void getToken(std::vector<token> *tokens) {
 
-    std::vector<AST_node*> parse() {
-        std::vector<AST_node*> AST;
+    }
+    std::vector<AST_node> parse(std::vector<token> &tokens) {
+        std::vector<AST_node> AST;
+        for(token& i:tokens) {
+            switch(i.type) {
+                case 0: break;
+                case 1: break;
+                case 2: break;
+                default: break;
+            }
+        }
         return AST;
     }
 };
 
-int main(int argc, char **argv)
-{
+int main(int argc, char** argv) {
     std::cout << "Usage: "
               << argv[0]
               << std::endl
@@ -187,21 +185,9 @@ int main(int argc, char **argv)
     std::ifstream pfile;
     pfile.open(filename);
     Lexer lexer(&pfile);
-    Parser parser;
+    Parser parser(lexer.tokens);
     auto cte = std::chrono::high_resolution_clock::now();
     auto ct = std::chrono::duration_cast<std::chrono::milliseconds>(cte - cts);
-    std::cerr << "Compiletime: "
-              << ct.count()
-              << std::endl
-              << std::endl
-              << std::flush;
-
-    for (token iterator : lexer.tokens)
-    {
-        std::cout << iterator.keyword_row << "|" << iterator.keyword_pos << "|" << iterator.value << ":" << iterator._type << std::endl;
-    }
-
-    std::cout << "Token list size: " << lexer.tokens.size();
 
     return 0;
 }
