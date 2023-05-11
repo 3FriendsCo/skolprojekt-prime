@@ -7,12 +7,12 @@
 
 Prime is an innovative programming language that seamlessly blends the simplicity of Python with the advanced and intricate features of C++ and Rust. Crafted primarily in C++, with some components implemented in C, Prime is designed to deliver a robust yet intuitive programming experience.
 
-| **Platform** | **Status** |
-| ------------ | ---------- |
-| **Windows**  | Underway   |
-| **macOS**    | Upcoming   |
-| **Linux**    | Upcoming   |
-| **Phone**    | Upcoming   |
+| **Platform** | **Architecture** | **Status** |
+| ------------ | ---------------- | ---------- |
+| **Windows**  | x86_64           | Underway   |
+| **macOS**    | x86_64           | Upcoming   |
+| **Linux**    | x86_64           | Upcoming   |
+| **Phone**    | x86_64           | Upcoming   |
 
 ## Highlights and roadmap of Prime
 
@@ -22,10 +22,8 @@ Prime is an innovative programming language that seamlessly blends the simplicit
 - [x] Visual Studio Code Extension
 - [ ] Parser Development (underway)
 - [ ] AST - Abstract Syntax Tree (underway)
-- [ ] Debug Mode Configuration Settings
+- [X] Debug Mode Configuration Settings
 - [ ] LLVM Integration (in pipeline)
-- [ ] JSON Integration (in pipeline)
-- [ ] Ruby Integration (in pipeline)
 - [ ] Support for Writing in Different Languages within Prime (upcoming)
 
 ## Deep Dive into Prime
@@ -44,7 +42,8 @@ To enhance the experience of writing and debugging Prime code, we've developed a
 | `docs/`    | here you can find documents or other informative content.             |
 | `include/` | here is all of our libraries nad dependencies                         |
 | `logs/`    | All of your logs when you execute a prime program will be added here. |
-| `tests/`    | here you will find the tests that is made by the development team.                                                |
+| `src/`   | here you will find the core of the programming language and this includes the parser, lexer and compiler.    |
+| `tests/`   | here you will find the tests that is made by the development team.    |
 
 ## How to Run the Project
 

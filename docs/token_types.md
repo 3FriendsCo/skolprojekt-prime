@@ -1,4 +1,7 @@
-    //SYMBOLS
+# All different tokens
+
+    ```go
+    // SYMBOLS
     UNKNOWN = -1,
 
     SPACE,
@@ -6,7 +9,7 @@
     DOT,COMMA,COLON,SEMICOLON,
     QUESTIONMARK,EXCLAMATIONPOINT,
     S_QOUTE,D_QOUTE,
-   
+
     L_PAREN,R_PAREN,
 
     L_CURLBRACKET,R_CURLBRACKET,L_BRACKET,R_BRACKET,
@@ -31,7 +34,7 @@
     DIVIDE,
 
     FRACTION_S,
-   
+
     LESS_THAN,GREATER_THAN,
 
     TOK_NUMBER,
@@ -39,13 +42,13 @@
     //KEYWORDS
 
     IDENTIFIER,
-   
+
     END_OF_FILE,
 
     SEIZE,
     LIBERATE,
     BANISH,
-   
+
     SHORT,
     INT,
     FLOAT,
@@ -65,3 +68,4 @@
     MAIN,
 
     MESSAGE,
+    ```

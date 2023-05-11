@@ -16,4 +16,5 @@ fn circumference(int dia): static {
 
 main() {
     log(circumference(123));
+    log("Prime is gigachad! :p")
 }

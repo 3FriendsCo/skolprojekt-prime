@@ -9,5 +9,12 @@
 # Ignore tempcoderunnerfile.cpp files
 *tempcoderunnerfile.cpp
 
+# Ignore tempcoderunnerfile.c files
+*tempcoderunnerfile.c
+
 # Ignore .log files inside the logs folder due to security risks and uneeded files
 logs/*.log
+
+# Ignore any possible .java or .class files
+*.java
+*.class

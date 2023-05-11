@@ -1,1 +1,0 @@
-oat c = sin(i), d = cos(j), e = sin(A), f = sin(j), g = cos(A), h = d + 2, D = 1

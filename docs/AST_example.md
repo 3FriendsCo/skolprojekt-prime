@@ -1,3 +1,8 @@
+# Here is an example of how an AST can be constructed
+
+### Without class
+
+```rust
 Program
 ├── Preprocessor Directive: include <iostream>
 ├── Function Definition: main
@@ -12,9 +17,11 @@ Program
     ├── Function Parameter: int y
     ├── Variable Declaration: int result = x + y
     └── Return Statement: result
+```
 
------------------- WITH CLASS -----------------------
+### With class
 
+```rust
 Program
 ├── Preprocessor Directive: include <iostream>
 ├── Class Definition: circle
@@ -36,4 +43,4 @@ Program
     ├── Function Parameter: int y
     ├── Variable Declaration: int result = x + y
     └── Return Statement: result
-
+```

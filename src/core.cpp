@@ -1,14 +1,12 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
-#include <memory>
 #include <string>
 #include <chrono>
 
 // #include "../include/error.h"
-#include "../main/include/node.h"
+#include "../include/node.h"
 
-<<<<<<< HEAD:main/core.cpp
 namespace Token {
     enum type   {
         PROGRAM = -4,
@@ -29,20 +27,6 @@ namespace Token {
         type _type;
         std::string value;
     };
-=======
-enum token_type {
-
-};
-
-struct token {
-    token_type type;
-    std::string value;
->>>>>>> e17ec5651b43b7ad83b9660336f09d712037329e:main/code.cpp
-};
-
-class AST_node {
-    public:
-    virtual ~AST_node() = default;
 };
 
 class Lexer
@@ -55,7 +39,6 @@ public:
     }
     ~Lexer()
     {
-        
     }
 
 private:
@@ -162,59 +145,30 @@ private:
     }
 };
 
-class Parser {
+class Parser
+{
     public:
-    Parser(std::vector<token> &tokens) {
-        std::vector<AST_node> AST = parse(tokens);
+    std::vector<Node::node*> AST;
+    Parser(std::vector<Token::token>& tokens) {
+        AST = parse(tokens);
     }
-    
     ~Parser() {
-
+        for(auto node:AST) {
+            delete node;  
+        }
     }
     private:
-<<<<<<< HEAD:main/core.cpp
     std::vector<Node::node*> parse(std::vector<Token::token>& tokens) {
         std::vector<Node::node*> AST;
         for(Token::token i: tokens) {
-            switch(i._type) {
-                case -4:// Program
-                    
-                    break;
-                case -3:// End of statement
-
-                    break; 
-                case -2:// End of line
-
-                    break; 
-                case -1:// End of file 
-
-                    break;
-                case 0:// Unknown
-    
-                    break;
-                case 1:// Unknown Symbol
-
-                    break;
-=======
-    void getToken(std::vector<token> *tokens) {
-
-    }
-    std::vector<AST_node> parse(std::vector<token> &tokens) {
-        std::vector<AST_node> AST;
-        for(token& i:tokens) {
-            switch(i.type) {
-                case 0: break;
-                case 1: break;
-                case 2: break;
-                default: break;
->>>>>>> e17ec5651b43b7ad83b9660336f09d712037329e:main/code.cpp
-            }
+            
         }
         return AST;
     }
 };
 
-int main(int argc, char** argv) {
+int main(int argc, char **argv)
+{
     std::cout << "Usage: "
               << argv[0]
               << std::endl
@@ -234,7 +188,6 @@ int main(int argc, char** argv) {
     std::ifstream pfile;
     pfile.open(filename);
     Lexer lexer(&pfile);
-<<<<<<< HEAD:main/core.cpp
     //Parser parser;
     auto cte = std::chrono::high_resolution_clock::now();
     auto ct = std::chrono::duration_cast<std::chrono::milliseconds>(cte - cts);
@@ -250,11 +203,6 @@ int main(int argc, char** argv) {
     }
 
     std::cout << "Token list size: " << lexer.tokens.size();
-=======
-    Parser parser(lexer.tokens);
-    auto cte = std::chrono::high_resolution_clock::now();
-    auto ct = std::chrono::duration_cast<std::chrono::milliseconds>(cte - cts);
->>>>>>> e17ec5651b43b7ad83b9660336f09d712037329e:main/code.cpp
 
     return 0;
 }

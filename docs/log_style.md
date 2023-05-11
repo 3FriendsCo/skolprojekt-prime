@@ -1,3 +1,5 @@
+# Our logs are styled like this:
+
 [Lexer: 511] Invalid character | 3ms
 	  4|	log("Hello World");
 	   |	    ^~ Lexing invalid character
