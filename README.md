@@ -41,7 +41,7 @@ To enhance the experience of writing and debugging Prime code, we've developed a
 | `config/`  | here is the fiels to easily change modes etc.                         |
 | `docs/`    | here you can find documents or other informative content.             |
 | `include/` | here is all of our libraries nad dependencies                         |
-| `logs/`    | All of your logs when you execute a prime program will be added here. |
+| `logs/`    | all of your logs when you execute a prime program will be added here. |
 | `src/`   | here you will find the core of the programming language and this includes the parser, lexer and compiler.    |
 | `tests/`   | here you will find the tests that is made by the development team.    |
 
