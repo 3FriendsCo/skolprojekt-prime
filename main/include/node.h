@@ -1,20 +1,25 @@
 #pragma once
 
-struct AST_node
+namespace Node {
+    enum type {
+        UNKNOWN
+    };
+    struct node
+    {
+        type type;
+        std::string value;
+        std::vector<node *> children;
+        node *parent;
+        // std::string LLVM_IR;
+    };
+}
+
+class Expr_node : public Node::node
 {
-    AST_type type;
-    std::string value;
-    std::vector<AST_node *> children;
-    AST_node *parent;
-    // std::string LLVM_IR;
+    Node::node LHS, RHS;
 };
 
-class Expr_node : public AST_node
-{
-    token LHS, RHS;
-};
-
-class Definition_node : public AST_node
+class Definition_node : public Node::node
 {
     
 };
