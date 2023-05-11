@@ -1,4 +1,5 @@
 #pragma once
+<<<<<<< HEAD
 
 namespace Node {
     enum type {
@@ -32,3 +33,5 @@ class Binary_Expr_node : Expr_node
 class Function_Def_node : public Definition_node
 {
 };
+=======
+>>>>>>> e17ec5651b43b7ad83b9660336f09d712037329e

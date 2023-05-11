@@ -1,4 +1,0 @@
-[Lexer:1342] Invalid character
-            line: x char: y
-                ~ Suggested action
-
