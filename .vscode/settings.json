@@ -75,6 +75,15 @@
     "deque": "cpp",
     "ranges": "cpp",
     "span": "cpp",
-    "stack": "cpp"
+    "stack": "cpp",
+    "array": "cpp",
+    "*.tcc": "cpp",
+    "cstdarg": "cpp",
+    "cwctype": "cpp",
+    "memory_resource": "cpp",
+    "numeric": "cpp",
+    "random": "cpp",
+    "string_view": "cpp",
+    "cinttypes": "cpp"
   }
 }

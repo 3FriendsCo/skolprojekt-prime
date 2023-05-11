@@ -1,0 +1,15 @@
+Prime files
+--->
+Preprocessor & Lexer
+
+Preprocessor:
+-Reads through file and replaces preprocessor directives with the corresponding code. The preprocessor waits for the lexer to input the
+correct code into the stream.
+
+Lexer:
+-Lexes file into tokens, if it encounters a comment it skips over it, and if it finds a preprocessor directive, it waits for
+the preprocessor to input the correct code into the stream.
+
+Now we don't need to have the lex function calling the preprocessor function, they wait for eachother
+--->
+Parser & optimizer

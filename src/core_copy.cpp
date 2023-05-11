@@ -3,9 +3,39 @@
 #include <vector>
 #include <string>
 #include <chrono>
+#include <thread>
 
 // #include "../include/error.h"
 #include "../include/node.h"
+
+// g++ -O3 core_copy.cpp -o core_copy
+// -03 will optimize the compiled code
+
+class Preprocessor {
+public:
+    Preprocessor(std::ifstream *p_pfile) {
+        if (!p_pfile->is_open())
+        {
+            // ERROR!
+            exit(1);
+        }
+        char current_char = '\0';
+        std::string buffer = "\0";
+        while(p_pfile->peek() != EOF) {
+            current_char = p_pfile->get();
+            switch(evaluate(current_char)) {
+                default: continue;
+                case 1: break;
+            }
+        }
+    }
+private:
+    int evaluate(char& current_char) {
+        switch(current_char) {
+
+        }
+    }
+};
 
 namespace Token {
     enum type   {
@@ -13,14 +43,18 @@ namespace Token {
         END_OF_STATEMENT = -3,
         END_OF_LINE = -2,
         END_OF_FILE = -1,
-        SEIZE,
-        LIBERATE,
-        BANISH,
-        FORCE,
-        MAIN,
+        //UNKNOWN:
         UNKNOWN, // For testing
         UNKNOWN_SYMBOL,
-
+        //PREPROCESSES:
+        SEIZE,
+        BANISH,
+        LIBERATE,
+        FORCE,
+        //FUNCTION:
+        MAIN,
+        FUNCTION,
+        //LITERALS:
         INT_LITERAL,
         DECI_LITERAL,
         OMNI_LITERAL,
@@ -80,13 +114,13 @@ private:
                 switch (deci_count)
                 {
                 case 0: /* INT */
-                    tokens.emplace_back(Token::token{});
+                    tokens.emplace_back(std::move(Token::token{}));
                     break;
                 case 1: /* FLOAT/DOUBLE/etc */
-                    tokens.emplace_back(Token::token{});
+                    tokens.emplace_back(std::move(Token::token{}));
                     break;
                 default: /* OMNI_LITERAL */
-                    tokens.emplace_back(Token::token{});
+                    tokens.emplace_back(std::move(Token::token{}));
                     break;
                 }
                 num_literal.clear();
@@ -99,7 +133,7 @@ private:
                     keyword += current_char;
                     current_char = input->get();
                 }
-                tokens.emplace_back(Token::token{});
+                tokens.emplace_back(std::move(Token::token{}));
                 keyword.clear();
             }
             else if (ispunct(current_char))
@@ -118,7 +152,7 @@ private:
                             str_literal += current_char;
                         }
                     }
-                    tokens.emplace_back(Token::token{});
+                    tokens.emplace_back(std::move(Token::token{}));
                     str_literal.clear();
                     break;
                 case '\'':
@@ -134,13 +168,13 @@ private:
                             str_literal += current_char;
                         }
                     }
-                    tokens.emplace_back(Token::token{});
+                    tokens.emplace_back(std::move(Token::token{}));
                     str_literal.clear();
                     break;
                 case '\\':
                     break;
                 }
-                tokens.emplace_back(Token::token{});
+                tokens.emplace_back(std::move(Token::token{}));
             }
             else
             {
@@ -153,26 +187,34 @@ private:
 
 class Parser
 {   
-    public:
+public:
     std::vector<Node::node*> AST;
-    Parser(std::vector<Token::token>& tokens) {
-        AST = parse(tokens);
+    Parser(std::vector<Token::token> *tokens) {
+        parse(tokens);
     }
-    ~Parser() {
+private:
+    void parse(std::vector<Token::token> *tokens) {
+        for(Token::token i: *tokens) {
+            switch(i._type) {
+                case Token::MAIN: break;
+            }
+        }
+    }
+};
 
-    }
-    private:
-    std::vector<Node::node*> parse() {
-        
-    }
+class Generator 
+{
+public:
+    Generator(std::vector<Node::node*> *AST) {
+
+    }   
 };
 
 int main(int argc, char **argv)
 {
     std::cout << "Usage: "
               << argv[0]
-              << std::endl
-              << std::endl;
+              << "\n\n";
     std::string filename = "code.pri";
     // std::cin >> filename;
     std::cout << "$$$$$$$\\            $$\\\n"
@@ -185,23 +227,28 @@ int main(int argc, char **argv)
               << "\\__|      \\__|      \\__|\\__| \\__| \\__| \\_______|\n\n";
 
     auto cts = std::chrono::high_resolution_clock::now();
+
     std::ifstream pfile;
+    std::ifstream p_pfile;
     pfile.open(filename);
+    p_pfile.open(filename);
+    
+    Preprocessor preprocessor(&p_pfile);
     Lexer lexer(&pfile);
-    // Parser parser(lexer.tokens);
+    // ------------------
+    Parser parser(&lexer.tokens);
     // Generator generator(parser.AST);
 
     auto cte = std::chrono::high_resolution_clock::now();
     auto ct = std::chrono::duration_cast<std::chrono::milliseconds>(cte - cts);
     std::cerr << "Compiletime: "
               << ct.count()
-              << std::endl
-              << std::endl
+              << "\n\n"
               << std::flush;
 
     for (Token::token iterator : lexer.tokens)
     {
-        std::cout << iterator.keyword_row << "|" << iterator.keyword_pos << "|" << iterator.value << ":" << iterator._type << std::endl;
+        std::cout << iterator.keyword_row << "|" << iterator.keyword_pos << "|" << iterator.value << ":" << iterator._type << "\n" << std::flush;
     }
 
     std::cout << "Token list size: " << lexer.tokens.size();
