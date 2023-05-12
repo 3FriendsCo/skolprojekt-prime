@@ -22,7 +22,7 @@ Prime is an innovative programming language that seamlessly blends the simplicit
 - [x] Visual Studio Code Extension
 - [ ] Parser Development (underway)
 - [ ] AST - Abstract Syntax Tree (underway)
-- [X] Debug Mode Configuration Settings
+- [x] Debug Mode Configuration Settings
 - [ ] LLVM Integration (in pipeline)
 - [ ] Support for Writing in Different Languages within Prime (upcoming)
 
@@ -36,14 +36,14 @@ To enhance the experience of writing and debugging Prime code, we've developed a
 
 ## Project Structure
 
-| Directory  | Contents                                                              |
-| ---------- | --------------------------------------------------------------------- |
-| `config/`  | here is the fiels to easily change modes etc.                         |
-| `docs/`    | here you can find documents or other informative content.             |
-| `include/` | here is all of our libraries nad dependencies                         |
-| `logs/`    | all of your logs when you execute a prime program will be added here. |
-| `src/`   | here you will find the core of the programming language and this includes the parser, lexer and compiler.    |
-| `tests/`   | here you will find the tests that is made by the development team.    |
+| Directory  | Contents                                                                                                  |
+| ---------- | --------------------------------------------------------------------------------------------------------- |
+| `config/`  | here is the fiels to easily change modes etc.                                                             |
+| `docs/`    | here you can find documents or other informative content.                                                 |
+| `include/` | here is all of our libraries nad dependencies                                                             |
+| `logs/`    | all of your logs when you execute a prime program will be added here.                                     |
+| `src/`     | here you will find the core of the programming language and this includes the parser, lexer and compiler. |
+| `tests/`   | here you will find the tests that is made by the development team.                                        |
 
 ## How to Run the Project
 
@@ -60,3 +60,5 @@ primec main.pri
 # This command will execute your Prime program
 
 ```
+
+`compile_and_run`

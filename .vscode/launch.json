@@ -8,8 +8,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": true,
-      "cwd": "c:/Users/neo.mannskar/Documents/Compilers/skolprojekt-prime/main",
-      "program": "c:/Users/neo.mannskar/Documents/Compilers/skolprojekt-prime/main/build/Debug/outDebug",
+      "cwd": "c:/Users/pontu/Desktop/skolprojekt-prime",
+      "program": "c:/Users/pontu/Desktop/skolprojekt-prime/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [
