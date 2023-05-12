@@ -18,3 +18,6 @@ logs/*.log
 # Ignore any possible .java or .class files
 *.java
 *.class
+
+# Ignore all files inside the build folder
+./src/build/*

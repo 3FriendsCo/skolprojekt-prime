@@ -222,7 +222,23 @@ private:
     void generate(std::vector<Node::node *> *AST)
     {
         std::ofstream output_file;
-        output_file.open("generated_assembly.asm");
+        output_file.open("./build/generated_assembly.asm");
+
+        // Write the _copyright.txt file first
+        std::ifstream copyright_file("../include/assembly/_copyright.txt");
+        if (copyright_file.is_open())
+        {
+            std::string line;
+            while (std::getline(copyright_file, line))
+            {
+                output_file << line << std::endl;
+            }
+            copyright_file.close();
+        }
+        else
+        {
+            std::cerr << "Failed to open file: ../include/assembly/_copyright.txt" << std::endl;
+        }
 
         // Write the _begin.asm file first
         std::ifstream begin_file("../include/assembly/_begin.asm");
@@ -231,7 +247,8 @@ private:
             std::string line;
             while (std::getline(begin_file, line))
             {
-                output_file << line << std::endl;
+                output_file << line << std::endl
+                            << std::endl;
             }
             begin_file.close();
         }
@@ -266,6 +283,57 @@ private:
             }
         }
         output_file.close();
+    }
+
+    void optimizer(/*det som generate() returnar (std::vector), (string)*/)
+    {
+        // Organize the code to ASM x86_64 format
+        /* Example:
+            -------- Program
+            liberate interface;
+
+            main() {
+                int i = 123;
+                log("Hello World!");
+            }
+
+            -------- AST
+            Program:
+                (vad nu det är i liberate interface)
+
+                main function:
+                    - inb_declaration: 123
+                    - function_call: "Hello World!"
+            Exit!
+            -------- Generator
+            global _start
+                asdasdasd
+            section .bss
+                sadsadsada
+            section .text
+                asdasd
+            -------- Optimizer
+            section .text
+                asdasdasdas
+            global _start
+                asdasdasdas
+
+            -------- Exempel Neo assembly
+            (liberate interface)
+            program:
+
+            main: ('argument' = void)
+                - int = 0
+                - function_call log: "Hello World!"
+            exit(0)
+            ----------optimized neo asm
+            data: int 123, str_lit "Hello World!"
+            start:
+            - main
+                funcCall log: str_lit
+        */
+        // Optimize (can do later)
+        // Output HERE to file (output_file)
     }
 };
 
@@ -310,7 +378,8 @@ int main(int argc, char **argv)
                   << std::flush;
     }
 
-    std::cout << "Token list size: " << lexer.tokens.size();
+    std::cout << "Token list size: " << lexer.tokens.size() << std::endl
+              << std::endl;
 
     return 0;
 }

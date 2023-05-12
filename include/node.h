@@ -56,24 +56,45 @@ namespace Node
     };
 }
 
+/*  void generator() {
+    if (node._type == PROGRAM) {
+        Program program(&children, &parent);
+    }
+*/
+
 class Program : public Node::node
 {
+    Program(node *parent, std::vector<node *> *children)
+    {
+    }
 };
-
+/*
 class End_of_statement : public Node::node
 {
-};
+    End_of_statement(node *parent, std::vector<node*> *children) {
 
+    }
+};
+*/
 class End_of_line : public Node::node
 {
+    End_of_line(node *parent, std::vector<node *> *children)
+    {
+    }
 };
 
 class End_of_file : public Node::node
 {
+    End_of_file(node *parent, std::vector<node *> *children)
+    {
+    }
 };
 
 class Unknown : public Node::node
 {
+    Unknown(node *parent, std::vector<node *> *children)
+    {
+    }
 };
 
 class Expr_node : public Node::node
