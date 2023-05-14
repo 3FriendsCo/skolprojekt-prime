@@ -10,20 +10,19 @@
 *tempcoderunnerfile.*
 *tempCodeRunnerFile.*
 
-# Ignore .log files inside the logs folder due to security risks and uneeded files
-./src/build/logs/*.log
-
 # Ignore any possible .java or .class files
 *.java
 *.class
 
-# Ignore all files inside the build folder
-./src/build/*
-
-# Except for the INCLUDE, SOURCE and TOOLS directories
+# Ignore all files inside the build folder except for the INCLUDE, SOURCE and TOOLS directories. I DO NOT KNOW WHY THE LOGS FOLDER GETS DELETED
+/src/build/*
 !/src/build/INCLUDE/
 !/src/build/SOURCE/
 !/src/build/TOOLS/
+!/src/build/logs/
+
+# Ignore .log files inside the logs folder due to security risks and uneeded files
+/src/build/logs/*
 !/src/build/logs/
 
 # In case an output fodler gets created when ran manually exclude that
