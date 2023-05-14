@@ -60,5 +60,3 @@ primec main.pri
 # This command will execute your Prime program
 
 ```
-
-`compile_and_run`

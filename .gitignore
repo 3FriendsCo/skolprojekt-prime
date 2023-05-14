@@ -21,3 +21,8 @@ logs/*.log
 
 # Ignore all files inside the build folder
 ./src/build/*
+
+# Except for the INCLUDE, SOURCE and TOOLS directories
+!./src/build/INCLUDE/
+!./src/build/SOURCE/
+!./src/build/TOOLS/

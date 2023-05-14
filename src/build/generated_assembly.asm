@@ -10,39 +10,33 @@
 ;     https://opensource.org/licenses/MIT
 ; 
 ; ---------------------------------------------------------------------------
-BITS 32
+include 'INCLUDE/win64ax.inc' ; you can simply switch between win32ax, win32wx, win64ax and win64wx here
 
-global  _start
 
-section .text
 
-    _start:     
+.code
 
-        mov       rax, 4
 
-        mov       rbx, 1
 
-        mov       rcx, message
+  start:
 
-        mov       rdx, message_len
 
-        mov       rsi, 0
 
-        xor       r8, r8
+	invoke	MessageBox,HWND_DESKTOP,"May I introduce myself?",invoke GetCommandLine,MB_YESNO
 
-        syscall
 
-        
 
-        mov       eax, 1
+	.if eax = IDYES
 
-        xor       ebx, ebx
+		invoke	MessageBox,HWND_DESKTOP,"Hi! I'm the example program!","Hello!",MB_OK
 
-        syscall
+	.endif
 
-section   .data
 
-    message:    db    "Hello, World!", 10
 
-    message_len: equ   $ - message
+	invoke	ExitProcess,0
+
+
+
+.end start
 
