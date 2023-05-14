@@ -258,6 +258,28 @@ private:
             std::cerr << "Failed to open file: ../include/assembly/_begin.asm" << std::endl;
         }
 
+        // -------- REMOVE THIS WHEN PUSHING TO PRODUCTION
+
+        // Write the _popup.asm file first
+        std::ifstream popup_file("../include/assembly/_popup.asm");
+        if (popup_file.is_open())
+        {
+            std::string line;
+            while (std::getline(popup_file, line))
+            {
+                output_file << line << std::endl;
+            }
+            popup_file.close();
+        }
+        else
+        {
+            std::cerr << "Failed to open file: ../include/assembly/_popup.asm" << std::endl;
+        }
+
+        output_file << std::endl;
+
+        // -------- REMOVE THIS WHEN PUSHING TO PRODUCTION
+
         for (auto node : *AST)
         {
             auto iter = nodeToFile.find(node->_type);
@@ -283,6 +305,26 @@ private:
                 std::cerr << "No file associated with node type: " << node->_type << std::endl;
             }
         }
+
+        // Write the _end.asm file first
+        std::ifstream end_file("../include/assembly/_end.asm");
+        if (end_file.is_open())
+        {
+            std::string line;
+            while (std::getline(end_file, line))
+            {
+                output_file << line << std::endl;
+            }
+            end_file.close();
+        }
+        else
+        {
+            std::cerr << "Failed to open file: ../include/assembly/_end.asm" << std::endl;
+        }
+
+        output_file << std::endl
+                    << std::endl
+                    << "; Program complete!";
         output_file.close();
     }
 

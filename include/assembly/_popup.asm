@@ -1,15 +1,9 @@
-include 'INCLUDE/win64ax.inc' ; you can simply switch between win32ax, win32wx, win64ax and win64wx here
-
-.code
-
-  start:
-
-	invoke	MessageBox,HWND_DESKTOP,"May I introduce myself?",invoke GetCommandLine,MB_YESNO
+	invoke	MessageBox,HWND_DESKTOP,"Am i a program made by Pontus?",invoke GetCommandLine,MB_YESNO
 
 	.if eax = IDYES
-		invoke	MessageBox,HWND_DESKTOP,"Hi! I'm the example program!","Hello!",MB_OK
+		invoke	MessageBox,HWND_DESKTOP,"You're correct. I am made by Pontus <3","Pontus's program!",MB_OK
 	.endif
 
-	invoke	ExitProcess,0
-
-.end start
+       .if eax = IDNO
+		invoke	MessageBox,HWND_DESKTOP,"You're wrong. I am made by Pontus :3","Pontus's program!",MB_OK
+	.endif

@@ -1,2 +1,2 @@
 // Here we will add test cases to automaticlly check if the code works like intended.
-// The etst cases should check many different parts of the program and print "TEST CASE #NUMBER PASSED" or "TEST CASE #NUMBER FAILED" depending on the outcome
+// The test cases should check many different parts of the program and print "TEST CASE #NUMBER PASSED" or "TEST CASE #NUMBER FAILED" depending on the outcome.
