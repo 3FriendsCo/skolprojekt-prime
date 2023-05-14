@@ -1,31 +1,31 @@
 # This file is needed for us to not publish any unneeded files
 
-# Ignore .env files
+# Ignore .env files to not publish any sensitive data
 *.env
 
-# Ignore .exe files
+# Ignore .exe files as they will be generated automatically
 *.exe
 
-# Ignore tempcoderunnerfile.cpp files
-*tempcoderunnerfile.cpp
-
-# Ignore tempcoderunnerfile.c files
-*tempcoderunnerfile.c
+# Ignore all tempcoderunnerfile.? files
+*tempcoderunnerfile.*
+*tempCodeRunnerFile.*
 
 # Ignore .log files inside the logs folder due to security risks and uneeded files
-logs/*.log
+./src/build/logs/*.log
 
 # Ignore any possible .java or .class files
 *.java
 *.class
 
 # Ignore all files inside the build folder
-/src/build/*
-
-# Ignore the generated_assembly.asm file inside the build folder
-/src/build/generated_assembly.asm
+./src/build/*
 
 # Except for the INCLUDE, SOURCE and TOOLS directories
 !/src/build/INCLUDE/
 !/src/build/SOURCE/
 !/src/build/TOOLS/
+!/src/build/logs/
+
+# In case an output fodler gets created when ran manually exclude that
+./src/output
+./src/output/*

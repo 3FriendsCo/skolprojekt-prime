@@ -1,0 +1,19 @@
+Logg:
+
+Först skapade Pontus en build.bat fil som kör ett skript för att kompilera, köra genererade filer och skriva de nuvarande processerna till terminalen.
+Dessutom lade Pontus till en assembly-kompilator vid namn 'nasm' och såg till att allt nödvändigt var på plats för att den skulle fungera korrekt.
+Men vi fick inte kompilatorn att fungera hur vi än gjorde men senare tänkte Pontus att vi skulle kolla så att nasm faktist hade support för x86-64 men den hade bara support för x86 assembly.
+Därefter så hittade Pontus en kompilator som fungerade med x86-64 vid namn 'fasm' och nu fungerade allt som det skulle.
+
+För att förbättra projektets dokumentation gjorde Pontus även förändringar i readme.md filen för att göra den mer informativ och lättförståelig.
+Och han skapade också ny fil vid namn requirements.md för att instruera användare om hur man laddar ner och installerar allt som krävs för att köra programmet.
+
+Pontus har också uppdaterat vår .gitignore fil för att inkludera fler fall och förhindra att vissa nya onödiga och hemliga filer laddas upp.
+Sedan har ett system utvecklats för att separera assembly kodstycken till olika filer och matcha dem till olika "nodes".
+När en kod i prime-filen skapas med en specifik nod, läses koden från snippet-filen och läggs till i en output assembly-fil.
+
+Slutligen har Neo skapat några noder, vilket Pontus kopplade till för att få det att fungera.
+Sedan så hade Pontus också snabbt designat en logga i figma för att sätta längst uppe i readme.md för att det ska se snyggare ut.
+Tills nästa logg så kom Neo på att vi kan strunta i program noden och bara utveckla de andra noderna efterom program noden ändå alltid kommer att vara "parent" till alla andra noder.
+När det är fixat så måste vi sedan jobba på parsern för att få programmet att tolka vilka tokens blir vilka nodes som därefter kan tolkas till assembly.
+Pontus har även implementerat en log funktion som kan anvädnas till att logga till log filen varje gång programmet körs.

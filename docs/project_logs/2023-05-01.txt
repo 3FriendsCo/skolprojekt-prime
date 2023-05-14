@@ -1,9 +1,9 @@
-Log:
+Logg:
 
 Vi har programmerat en fungerande version av lexern och fokuserar
 just nu på att få att optimisera och korta ner dess storlek.
 
-Ett av målen med compilern är även att göra den så lite som möjligt för 
+Ett av målen med compilern är även att göra den så liten som möjligt för 
 att den ska kunna köras på så små plattformar som möjligt i framtiden.
 Därför började vi på en "lightweight" version: Primec Lite, vilket
 skulle ha samma sammanställningsförmåga som Primec, men utan vissa

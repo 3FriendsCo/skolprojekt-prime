@@ -8,9 +8,10 @@
 
 // #include "../include/error.h"
 #include "../include/node.h"
+#include "../include/program_logs.h"
 
 // g++ -O3 main.cpp -o main
-// -03 will optimize the compiled code
+// -03 will optimize the compiled code hard (less stable than 02 but faster)
 
 class Preprocessor
 {
@@ -66,6 +67,7 @@ namespace Token
 
 class Lexer
 {
+
 public:
     std::vector<Token::token> tokens;
     Lexer(std::ifstream *input)
@@ -79,6 +81,9 @@ public:
 private:
     std::vector<Token::token> lex(std::ifstream *input)
     {
+        auto logger = ProgramLog::get_instance();
+        logger->log_message("Starting the lexing process to read tokens from the .pri file.");
+
         if (!input->is_open())
         {
             // ERROR!
@@ -174,6 +179,7 @@ private:
                 // ERROR!
             }
         }
+        logger->log_message("Lexing completed.");
         return tokens;
     }
 };
@@ -190,6 +196,9 @@ public:
 private:
     void parse(std::vector<Token::token> *tokens)
     {
+        auto logger = ProgramLog::get_instance();
+        logger->log_message("Starting parser.");
+
         for (Token::token i : *tokens)
         {
             switch (i._type)
@@ -198,6 +207,8 @@ private:
                 break;
             }
         }
+
+        logger->log_message("Parsing complete.");
     }
 };
 
@@ -221,6 +232,9 @@ public:
 private:
     void generate(std::vector<Node::node *> *AST)
     {
+        auto logger = ProgramLog::get_instance();
+        logger->log_message("Starting the generation of the assembly file.");
+
         std::ofstream output_file;
         output_file.open("./build/generated_assembly.asm");
 
@@ -326,6 +340,8 @@ private:
                     << std::endl
                     << "; Program complete!";
         output_file.close();
+
+        logger->log_message("Completed the assembly file and closed it.");
     }
 
     void optimizer(/*det som generate() returnar (std::vector), (string)*/)
@@ -361,7 +377,7 @@ private:
             global _start
                 asdasdasdas
 
-            -------- Exempel Neo assembly
+            -------- Exempel i assembly
             (liberate interface)
             program:
 
@@ -369,7 +385,7 @@ private:
                 - int = 0
                 - function_call log: "Hello World!"
             exit(0)
-            ----------optimized neo asm
+            ---------- optimiserad assembly
             data: int 123, str_lit "Hello World!"
             start:
             - main
@@ -382,6 +398,15 @@ private:
 
 int main(int argc, char **argv)
 {
+    // ---- THIS IS USED FOR LOGGING ----
+    auto logger = ProgramLog::get_instance();
+
+    // Log the start message once
+    logger->log_start_message();
+
+    logger->log_message("The logger is now in the main function.");
+    // ---- THIS IS USED FOR LOGGING ----
+
     std::cout << "Usage: "
               << argv[0]
               << "\n\n";
