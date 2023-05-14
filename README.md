@@ -3,7 +3,7 @@
   <img src="./docs/prime_logo.png" alt="Prime logo" height="70"> 
 </picture>
 
-# Prime: The Power of Simplicity and Complexity
+# Prime: The Power of Simplicity
 
 Prime is an innovative programming language that seamlessly blends the simplicity of Python with the advanced and intricate features of C++ and Rust. Crafted primarily in C++, with some components implemented in C, Prime is designed to deliver a robust yet intuitive programming experience.
 
@@ -12,7 +12,7 @@ Prime is an innovative programming language that seamlessly blends the simplicit
 | **Windows**  | x86_64           | Underway   |
 | **macOS**    | x86_64           | Upcoming   |
 | **Linux**    | x86_64           | Upcoming   |
-| **Phone**    | x86_64           | Upcoming   |
+| **Phone**    | x86_64, ARM      | Upcoming   |
 
 ## Highlights and roadmap of Prime
 
