@@ -1,5 +1,3 @@
-# This file is needed for us to not publish any unneeded files
-
 # Ignore .env files to not publish any sensitive data
 *.env
 
@@ -14,17 +12,19 @@
 *.java
 *.class
 
-# Ignore all files inside the build folder except for the INCLUDE, SOURCE and TOOLS directories. I DO NOT KNOW WHY THE LOGS FOLDER GETS DELETED
+# Ignore all files inside the build folder
 /src/build/*
+/src/build/generated_assembly.asm
+
+# Except for the INCLUDE, SOURCE, TOOLS, and logs directories
 !/src/build/INCLUDE/
 !/src/build/SOURCE/
 !/src/build/TOOLS/
 !/src/build/logs/
 
 # Ignore .log files inside the logs folder due to security risks and uneeded files
-/src/build/logs/*
-!/src/build/logs/
+/src/build/logs/*.log
 
-# In case an output fodler gets created when ran manually exclude that
-./src/output
-./src/output/*
+# In case an output folder gets created when ran manually exclude that
+/src/output
+/src/output/*
