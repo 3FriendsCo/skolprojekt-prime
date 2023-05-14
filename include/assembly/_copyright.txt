@@ -1,12 +1,12 @@
-; ---------------------------------------------------------------------------
-; Assembly version: x86_64 (AMD_64)
-; 
-; Copyright (c) 2023, 3FriendsCo
-; Authors: Pontus Henriksson & Neo Mannskär
-; 
-; Licensed under the MIT License. You may not use this file except in compliance
-; with the License. You may obtain a copy of the License at
-; 
-;     https://opensource.org/licenses/MIT
-; 
-; ---------------------------------------------------------------------------
+; ----------------------------------------------------------------------------------|
+; Assembly version: x86_64 (AMD_64)                                                 |
+;                                                                                   |
+; Copyright (c) 2023, 3FriendsCo                                                    |
+; Authors: Pontus Henriksson & Neo Mannskär                                         |
+;                                                                                   |
+; Licensed under the MIT License. You may not use this file except in compliance    |
+; with the License. You may obtain a copy of the License at:                        |
+;                                                                                   |
+; - https://opensource.org/licenses/MIT                                             |
+;                                                                                   |
+; ----------------------------------------------------------------------------------|

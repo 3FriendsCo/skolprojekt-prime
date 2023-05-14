@@ -45,7 +45,11 @@ To enhance the experience of writing and debugging Prime code, we've developed a
 | `src/`     | here you will find the core of the programming language and this includes the parser, lexer and compiler. |
 | `tests/`   | here you will find the tests that is made by the development team.                                        |
 
-## How to Run the Project
+## How to build the Project
+
+Firstoff make sure that you have all prerequesities installed on your machine and that your machine supports x86_64 assembly (AMD_64). The prerequisites could be found in the file called `requirements.md` in the projects root directory. To build a Prime project, you need to run the `build.bat` file located inside `./src/build.bat`. This can be done in a terminal or command line interface. When the `build.bat` file has been ran it will build the project and then run the completed version. The completed assembly code will be created in `./src/build/generated_assembly.asm`.
+
+## How to run the project
 
 To run a Prime project, you need to use the `primec` command followed by the filename. This can be done in a terminal or command line interface. Here is the basic command structure:
 

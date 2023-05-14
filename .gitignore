@@ -1,4 +1,4 @@
-# This file is needed for us to not publish any uneeded files
+# This file is needed for us to not publish any unneeded files
 
 # Ignore .env files
 *.env
@@ -20,9 +20,12 @@ logs/*.log
 *.class
 
 # Ignore all files inside the build folder
-./src/build/*
+/src/build/*
+
+# Ignore the generated_assembly.asm file inside the build folder
+/src/build/generated_assembly.asm
 
 # Except for the INCLUDE, SOURCE and TOOLS directories
-!./src/build/INCLUDE/
-!./src/build/SOURCE/
-!./src/build/TOOLS/
+!/src/build/INCLUDE/
+!/src/build/SOURCE/
+!/src/build/TOOLS/

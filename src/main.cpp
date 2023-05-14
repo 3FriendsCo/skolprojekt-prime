@@ -240,6 +240,8 @@ private:
             std::cerr << "Failed to open file: ../include/assembly/_copyright.txt" << std::endl;
         }
 
+        output_file << std::endl;
+
         // Write the _begin.asm file first
         std::ifstream begin_file("../include/assembly/_begin.asm");
         if (begin_file.is_open())
@@ -247,8 +249,7 @@ private:
             std::string line;
             while (std::getline(begin_file, line))
             {
-                output_file << line << std::endl
-                            << std::endl;
+                output_file << line << std::endl;
             }
             begin_file.close();
         }
